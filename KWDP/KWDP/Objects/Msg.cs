@@ -10,5 +10,6 @@ namespace KWDP.Objects
     {        
         public static string CANNOT_DELETE = "Nie można usunąć elementu";
         public static string TO_BE_CONTINUED = "Funkcjonalność w przygotowaniu...";
+        public static string DISTINCT_PATIENTS = "Pacjent już istnieje !";
     }
 }

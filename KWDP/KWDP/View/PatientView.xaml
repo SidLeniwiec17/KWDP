@@ -41,6 +41,7 @@
                 <RowDefinition Name="NameRow" Height="Auto"/>
                 <RowDefinition Name="SurNameRow" Height="Auto"/>
                 <RowDefinition Name="AgeRow" Height="Auto"/>
+                <RowDefinition Name="PeselRow" Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -49,9 +50,11 @@
             <Label Name="PodgladNameLabel" Grid.Row="0" Grid.Column="0" Style="{StaticResource SmallLabel}" Content="Imie :"/>
             <Label Name="PodgladSurNameLabel" Grid.Row="1" Grid.Column="0" Style="{StaticResource SmallLabel}" Content="Nazwisko :"/>
             <Label Name="PodgladAgeLabel" Grid.Row="2" Grid.Column="0" Style="{StaticResource SmallLabel}" Content="Wiek :"/>
+            <Label Name="PodgladPeselLabel" Grid.Row="3" Grid.Column="0" Style="{StaticResource SmallLabel}" Content="Pesel :"/>
             <Label Name="PodgladNameLabelContent" Grid.Row="0" Grid.Column="1" Style="{StaticResource SmallLabelLeft}" Content=""/>
-            <Label Name="PodgladSurNameLabelContent" Grid.Row="1" Grid.Column="2" Style="{StaticResource SmallLabelLeft}" Content=""/>
-            <Label Name="PodgladAgeLabelContent" Grid.Row="2" Grid.Column="3" Style="{StaticResource SmallLabelLeft}" Content=""/>
+            <Label Name="PodgladSurNameLabelContent" Grid.Row="1" Grid.Column="1" Style="{StaticResource SmallLabelLeft}" Content=""/>
+            <Label Name="PodgladAgeLabelContent" Grid.Row="2" Grid.Column="1" Style="{StaticResource SmallLabelLeft}" Content=""/>
+            <Label Name="PodgladPeselLabelContent" Grid.Row="3" Grid.Column="1" Style="{StaticResource SmallLabelLeft}" Content=""/>
         </Grid>
 
         <Grid Name="ButtonsGrid" Grid.Row="1" Grid.Column="2">
@@ -59,10 +62,12 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Button x:Name="NewPatientButton" Grid.Row="0"  Style="{StaticResource AddButtonStyle}" Content="Dodaj Pacjenta" Click="NewPatientButton_Click"/>
             <Button x:Name="DeletePatientButton" Grid.Row="1"  Style="{StaticResource AddButtonStyle}" Content="Usuń Pacjenta" Click="DeletePatientButton_Click"/>
-            <Button x:Name="EditPatientButton" Grid.Row="2"  Style="{StaticResource AddButtonStyle}" Content="Badaj Pacjenta" Click="EditPatientButton_Click"/>
+            <Button x:Name="InvestigatePatientButton" Grid.Row="3"  Style="{StaticResource AddButtonStyle}" Content="Badaj Pacjenta" Click="InvestigatePatientButton_Click"/>
+            <Button x:Name="EditPatientButton" Grid.Row="2"  Style="{StaticResource AddButtonStyle}" Content="Edytuj Pacjenta" Click="EditPatientButton_Click"/>
         </Grid>
     </Grid>
 </UserControl>

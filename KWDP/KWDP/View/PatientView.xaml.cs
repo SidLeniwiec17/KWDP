@@ -23,6 +23,7 @@ namespace KWDP.View
     public partial class PatientView : UserControl
     {
         public ObservableCollection<Patient> PatientsList { get; set; }
+        public CreatePatientDialog CreatePatientDialog { get; set; }
 
         public PatientView()
         {
@@ -37,9 +38,9 @@ namespace KWDP.View
 
         private void LoadPatientsList()
         {
-            var a = new Patient("Jan", "Kowalski", 18);
-            var b = new Patient("Adam", "Adamski", 19);
-            var c = new Patient("Tomasz", "Nowak", 20);
+            var a = new Patient("Jan", "Kowalski", 18, "93827193821");
+            var b = new Patient("Adam", "Adamski", 19, "93827193822");
+            var c = new Patient("Tomasz", "Nowak", 20, "93827193823");
             PatientsList.Add(a);
             PatientsList.Add(b);
             PatientsList.Add(c);
@@ -55,6 +56,9 @@ namespace KWDP.View
 
             PodgladAgeLabel.Visibility = Visibility.Collapsed;
             PodgladAgeLabelContent.Visibility = Visibility.Collapsed;
+
+            PodgladPeselLabel.Visibility = Visibility.Collapsed;
+            PodgladPeselLabelContent.Visibility = Visibility.Collapsed;
         }
 
         private void ShowSzczegolySection(Patient patient)
@@ -69,7 +73,18 @@ namespace KWDP.View
 
             PodgladAgeLabel.Visibility = Visibility.Visible;
             PodgladAgeLabelContent.Visibility = Visibility.Visible;
-            PodgladAgeLabelContent.Content = patient.Age.ToString();
+            if(patient.Age < 0)
+            {
+                PodgladAgeLabelContent.Content = "---";
+            }
+            else
+            {
+                PodgladAgeLabelContent.Content = patient.Age.ToString();
+            }
+
+            PodgladPeselLabel.Visibility = Visibility.Visible;
+            PodgladPeselLabelContent.Visibility = Visibility.Visible;
+            PodgladPeselLabelContent.Content = patient.Pesel.ToString();
         }
 
         private void PatientsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -87,7 +102,8 @@ namespace KWDP.View
 
         private void NewPatientButton_Click(object sender, RoutedEventArgs e)
         {
-
+            CreatePatientDialog = new CreatePatientDialog(PatientsList);
+            CreatePatientDialog.ShowDialog();
         }
 
         private void DeletePatientButton_Click(object sender, RoutedEventArgs e)
@@ -111,6 +127,13 @@ namespace KWDP.View
         }
 
         private void EditPatientButton_Click(object sender, RoutedEventArgs e)
+        {
+            var selectetPatient = PatientsListView.SelectedIndex;
+            CreatePatientDialog = new CreatePatientDialog(PatientsList, selectetPatient);
+            CreatePatientDialog.ShowDialog();
+        }
+
+        private void InvestigatePatientButton_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show(Msg.TO_BE_CONTINUED);
         }

@@ -4,15 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KWDP"
-        xmlns:viewmodels="clr-namespace:KWDP.ViewModel"
         xmlns:views="clr-namespace:KWDP.View"
         mc:Ignorable="d"
         Title="KWDP" MinHeight="300" MinWidth="500" Height="600" Width="1000">
     <Window.Resources>
-        <DataTemplate x:Name="PatientViewTemplate" DataType="{x:Type viewmodels:PatientViewModel}">
+        <DataTemplate x:Name="PatientViewTemplate" DataType="{x:Type views:PatientView}">
             <views:PatientView DataContext="{Binding}"/>
         </DataTemplate>
-        <DataTemplate x:Name="MedicalViewTemplate" DataType="{x:Type viewmodels:MedicalViewModel}">
+        <DataTemplate x:Name="MedicalViewTemplate" DataType="{x:Type views:MedicalView}">
             <views:MedicalView DataContext="{Binding}"/>
         </DataTemplate>
     </Window.Resources>

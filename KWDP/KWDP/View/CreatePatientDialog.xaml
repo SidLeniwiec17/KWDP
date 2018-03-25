@@ -1,0 +1,32 @@
+﻿<Window x:Class="KWDP.View.CreatePatientDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:KWDP.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Label Name="PodgladNameLabel" Grid.Row="0" Grid.Column="0" Style="{StaticResource SmallLabel}" Content="Imie :"/>
+        <Label Name="PodgladSurNameLabel" Grid.Row="1" Grid.Column="0" Style="{StaticResource SmallLabel}" Content="Nazwisko :"/>
+        <Label Name="PodgladAgeLabel" Grid.Row="2" Grid.Column="0" Style="{StaticResource SmallLabel}" Content="Wiek :"/>
+        <Label Name="PodgladPeselLabel" Grid.Row="3" Grid.Column="0" Style="{StaticResource SmallLabel}" Content="Pesel :"/>
+        <TextBox Name="NameTextBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource TextBox}" />
+        <TextBox Name="SurNameTextBox" Grid.Row="1" Grid.Column="1" Style="{StaticResource TextBox}" />
+        <TextBox Name="AgeTextBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource TextBox}" />
+        <TextBox Name="PeselTextBox" Grid.Row="3" Grid.Column="1" Style="{StaticResource TextBox}" />
+        <Button Name="AddButton" Content="Zapisz" Grid.Row="4" Grid.Column="1" Style="{StaticResource AddButtonStyle}" Click="AddButton_Click"/>
+
+    </Grid>
+</Window>

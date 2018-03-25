@@ -1,4 +1,4 @@
-﻿using KWDP.ViewModel;
+﻿using KWDP.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +24,7 @@ namespace KWDP
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new PatientViewModel();
+            DataContext = new PatientView();
         }
     }
 }

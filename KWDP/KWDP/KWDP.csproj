@@ -57,8 +57,9 @@
     </ApplicationDefinition>
     <Compile Include="Objects\Msg.cs" />
     <Compile Include="Objects\Patient.cs" />
-    <Compile Include="ViewModel\MedicalViewModel.cs" />
-    <Compile Include="ViewModel\PatientViewModel.cs" />
+    <Compile Include="View\CreatePatientDialog.xaml.cs">
+      <DependentUpon>CreatePatientDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\MedicalView.xaml.cs">
       <DependentUpon>MedicalView.xaml</DependentUpon>
     </Compile>
@@ -77,6 +78,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\CreatePatientDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MedicalView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
