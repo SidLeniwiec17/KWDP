@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:KWDP"
         xmlns:views="clr-namespace:KWDP.View"
         mc:Ignorable="d"
-        Title="KWDP" MinHeight="300" MinWidth="500" Height="600" Width="1000">
+        Title="KWDP" MinHeight="300" MinWidth="575" Height="600" Width="1000">
     <Window.Resources>
         <DataTemplate x:Name="PatientViewTemplate" DataType="{x:Type views:PatientView}">
             <views:PatientView DataContext="{Binding}"/>
