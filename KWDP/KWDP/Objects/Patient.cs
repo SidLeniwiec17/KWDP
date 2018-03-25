@@ -12,18 +12,20 @@ namespace KWDP.Objects
         public string SurName { get; set; }
         public int Age { get; set; }
         public string Pesel { get; set; }
+        public int Gender { get; set; }
 
         public Patient()
         {
 
         }
 
-        public Patient(string fName, string sName, int age, string pesel)
+        public Patient(string fName, string sName, int age, string pesel, int gender)
         {
             FirstName = fName;
             SurName = sName;
             Age = age;
             Pesel = pesel;
+            Gender = gender;
         }
     }
 }

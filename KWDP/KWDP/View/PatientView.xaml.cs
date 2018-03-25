@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,7 @@ namespace KWDP.View
     {
         public ObservableCollection<Patient> PatientsList { get; set; }
         public CreatePatientDialog CreatePatientDialog { get; set; }
+        public MedicalView MedicalView { get; set; }
 
         public PatientView()
         {
@@ -38,9 +40,9 @@ namespace KWDP.View
 
         private void LoadPatientsList()
         {
-            var a = new Patient("Jan", "Kowalski", 18, "93827193821");
-            var b = new Patient("Adam", "Adamski", 19, "93827193822");
-            var c = new Patient("Tomasz", "Nowak", 20, "93827193823");
+            var a = new Patient("Jan", "Kowalski", 18, "93827193821", 1);
+            var b = new Patient("Adam", "Adamski", 19, "93827193822", 1);
+            var c = new Patient("Tomasz", "Nowak", 20, "93827193823", 1);
             PatientsList.Add(a);
             PatientsList.Add(b);
             PatientsList.Add(c);
@@ -73,7 +75,7 @@ namespace KWDP.View
 
             PodgladAgeLabel.Visibility = Visibility.Visible;
             PodgladAgeLabelContent.Visibility = Visibility.Visible;
-            if(patient.Age < 0)
+            if (patient.Age < 0)
             {
                 PodgladAgeLabelContent.Content = "---";
             }
@@ -90,7 +92,7 @@ namespace KWDP.View
         private void PatientsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectetPatient = (Patient)PatientsListView.SelectedItem;
-            if(selectetPatient != null)
+            if (selectetPatient != null)
             {
                 ShowSzczegolySection(selectetPatient);
             }
@@ -129,18 +131,42 @@ namespace KWDP.View
         private void EditPatientButton_Click(object sender, RoutedEventArgs e)
         {
             var selectetPatient = PatientsListView.SelectedIndex;
-            CreatePatientDialog = new CreatePatientDialog(PatientsList, selectetPatient);
-            CreatePatientDialog.ShowDialog();
+            if (selectetPatient >= 0)
+            {
+                CreatePatientDialog = new CreatePatientDialog(PatientsList, selectetPatient);
+                CreatePatientDialog.ShowDialog();
+            }
         }
 
         private void InvestigatePatientButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(Msg.TO_BE_CONTINUED);
+            var patient = (Patient)PatientsListView.SelectedItem;
+            var patientIdx = PatientsListView.SelectedIndex;
+            if (patient != null)
+            {
+                MedicalView = new MedicalView();
+                MedicalView.PatientsList = PatientsList;
+                MedicalView.Patient = patient;
+                MedicalView.Index = patientIdx;
+                MedicalView.PatientViewInstance = this;
+                MainWindow.MyWindow.Content = MedicalView;
+            }
+        }
+
+        public void SetContextBack()
+        {
+            DataContext = this;
         }
 
         private void ShowError(string message)
         {
             MessageBox.Show(message, "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+        }        
+
+        private void PatientsListView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            ICollectionView view = CollectionViewSource.GetDefaultView(PatientsListView);
+            view.Refresh();
+        }      
     }
 }

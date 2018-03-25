@@ -56,6 +56,8 @@ namespace KWDP.View
             SurNameTextBox.Text = patient.SurName;
             AgeTextBox.Text = patient.Age.ToString();
             PeselTextBox.Text = patient.Pesel;
+            if (patient.Gender >= 0)
+                GenderComboBox.SelectedIndex = patient.Gender;
 
             PeselTextBox.IsEnabled = false;
         }
@@ -73,7 +75,7 @@ namespace KWDP.View
             var pesel = PeselTextBox.Text;
             if (string.IsNullOrEmpty(pesel))
                 return;
-
+            var gender = GenderComboBox.SelectedIndex;
             var patient = new Patient();
             patient.FirstName = name;
             patient.SurName = surname;
@@ -87,6 +89,7 @@ namespace KWDP.View
                 patient.Age = -1;
             }
             patient.Pesel = pesel;
+            patient.Gender = gender;
 
             if (patientsList.Count == 0 || (isEditing || (patientsList.All(x => x.Pesel != patient.Pesel))))
             {
@@ -100,7 +103,7 @@ namespace KWDP.View
                 }
                 this.Close();
             }
-            else MessageBox.Show(Msg.DISTINCT_PATIENTS);            
+            else MessageBox.Show(Msg.DISTINCT_PATIENTS);
         }
     }
 }

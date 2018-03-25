@@ -17,16 +17,22 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Label Name="PodgladNameLabel" Grid.Row="0" Grid.Column="0" Style="{StaticResource SmallLabel}" Content="Imie :"/>
         <Label Name="PodgladSurNameLabel" Grid.Row="1" Grid.Column="0" Style="{StaticResource SmallLabel}" Content="Nazwisko :"/>
         <Label Name="PodgladAgeLabel" Grid.Row="2" Grid.Column="0" Style="{StaticResource SmallLabel}" Content="Wiek :"/>
         <Label Name="PodgladPeselLabel" Grid.Row="3" Grid.Column="0" Style="{StaticResource SmallLabel}" Content="Pesel :"/>
+        <Label Name="PodgladGenderLabel" Grid.Row="4" Grid.Column="0" Style="{StaticResource SmallLabel}" Content="Płeć :"/>
         <TextBox Name="NameTextBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource TextBox}" />
         <TextBox Name="SurNameTextBox" Grid.Row="1" Grid.Column="1" Style="{StaticResource TextBox}" />
         <TextBox Name="AgeTextBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource TextBox}" />
         <TextBox Name="PeselTextBox" Grid.Row="3" Grid.Column="1" Style="{StaticResource TextBox}" />
-        <Button Name="AddButton" Content="Zapisz" Grid.Row="4" Grid.Column="1" Style="{StaticResource AddButtonStyle}" Click="AddButton_Click"/>
+        <Button Name="AddButton" Content="Zapisz" Grid.Row="5" Grid.Column="1" Style="{StaticResource AddButtonStyle}" Click="AddButton_Click"/>
+        <ComboBox Name="GenderComboBox" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Center" Margin="3,3,3,3" VerticalAlignment="Center">
+            <ComboBoxItem Name="cbGenderK">Kobieta</ComboBoxItem>
+            <ComboBoxItem Name="cbGenderM">Mężczyzna</ComboBoxItem>
+        </ComboBox>
 
     </Grid>
 </Window>

@@ -23,11 +23,12 @@
         <ListView Margin="5,5,5,5" x:Name="PatientsListView" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding PatientsList}" IsSynchronizedWithCurrentItem="True" SelectionChanged="PatientsListView_SelectionChanged">
             <ListView.View>
                 <GridView>
-                    <GridView.ColumnHeaderContainerStyle>
+                    <!--<GridView.ColumnHeaderContainerStyle>
                         <Style TargetType="{x:Type GridViewColumnHeader}">
                             <Setter Property="IsEnabled" Value="False"/>
+                            <Setter Property="Width" Value="Auto"/>
                         </Style>
-                    </GridView.ColumnHeaderContainerStyle>
+                    </GridView.ColumnHeaderContainerStyle>-->
                     <GridViewColumn DisplayMemberBinding="{Binding FirstName}">
                     </GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding SurName}">

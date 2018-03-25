@@ -5,8 +5,62 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:KWDP.View"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             Loaded="UserControl_Loaded" >
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource BigTitleLabel}" Content="Dane Pacjenta"/>
+            <Label Name="PodgladNameLabel" Grid.Row="1" Grid.Column="0" Style="{StaticResource SmallLabel}" Content="Imie :"/>
+            <Label Name="PodgladSurNameLabel" Grid.Row="2" Grid.Column="0" Style="{StaticResource SmallLabel}" Content="Nazwisko :"/>
+            <Label Name="PodgladAgeLabel" Grid.Row="3" Grid.Column="0" Style="{StaticResource SmallLabel}" Content="Wiek :"/>
+            <Label Name="PodgladPeselLabel" Grid.Row="4" Grid.Column="0" Style="{StaticResource SmallLabel}" Content="Pesel :"/>
+            <Label Name="PodgladGenderLabel" Grid.Row="5" Grid.Column="0" Style="{StaticResource SmallLabel}" Content="Płeć :"/>
+            <TextBox Name="NameTextBox" Grid.Row="1" Grid.Column="1" Style="{StaticResource TextBox}" />
+            <TextBox Name="SurNameTextBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource TextBox}" />
+            <TextBox Name="AgeTextBox" Grid.Row="3" Grid.Column="1" Style="{StaticResource TextBox}" />
+            <TextBox Name="PeselTextBox" Grid.Row="4" Grid.Column="1" Style="{StaticResource TextBox}" />
+            <ComboBox Name="GenderComboBox" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" Margin="3,3,3,3" VerticalAlignment="Center">
+                <ComboBoxItem Name="cbGenderK">Kobieta</ComboBoxItem>
+                <ComboBoxItem Name="cbGenderM">Mężczyzna</ComboBoxItem>
+            </ComboBox>
+        </Grid>
+        <Grid Grid.Column ="1"  >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Style="{StaticResource BigTitleLabel}" Content="Akcje :"/>
+            <Button x:Name="LoadEkgButton" Grid.Row="1"  Style="{StaticResource AddButtonStyle}" Content="Wgraj EKG" Click="LoadEkgButton_Click"/>
+            <Button x:Name="LoadQuestionsButton" Grid.Row="2"  Style="{StaticResource AddButtonStyle}" Content="Uzupełnij wywiad medyczny" Click="LoadQuestionsButton_Click"/>
+            <Button x:Name="BackButton" Grid.Row="3"  Style="{StaticResource AddButtonStyle}" Content="WSTECZ" Click="BackButton_Click"/>
+        </Grid>
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Style="{StaticResource BigTitleLabel}" Content="EKG"/>
+            <Label Grid.Row="2" Style="{StaticResource BigTitleLabel}" Content="Diagnoza"/>
+        </Grid>
     </Grid>
 </UserControl>

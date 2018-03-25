@@ -21,10 +21,15 @@ namespace KWDP
     /// </summary>
     public partial class MainWindow : Window
     {
+        public PatientView PatientView { get; set; }
+        public static Window MyWindow { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new PatientView();
+            MyWindow = this;
+            PatientView = new PatientView();
+            this.Content = PatientView;
         }
     }
 }
