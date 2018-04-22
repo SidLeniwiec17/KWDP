@@ -103,7 +103,9 @@ namespace KWDP.View
 
         private void LoadQuestionsButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(Msg.TO_BE_CONTINUED);
+            //MessageBox.Show(Msg.TO_BE_CONTINUED);
+            Wywiad wywiad = new Wywiad();
+            wywiad.ShowDialog();
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)

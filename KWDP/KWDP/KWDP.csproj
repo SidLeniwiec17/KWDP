@@ -81,6 +81,9 @@
     <Compile Include="Objects\DBHandler.cs" />
     <Compile Include="Objects\Msg.cs" />
     <Compile Include="Objects\Patient.cs" />
+    <Compile Include="Objects\Wywiad.xaml.cs">
+      <DependentUpon>Wywiad.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\CreatePatientDialog.xaml.cs">
       <DependentUpon>CreatePatientDialog.xaml</DependentUpon>
     </Compile>
@@ -102,6 +105,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Objects\Wywiad.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\CreatePatientDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
