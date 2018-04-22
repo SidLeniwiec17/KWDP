@@ -1,0 +1,108 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data.SQLite;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace KWDP.Objects
+{
+    public class DBHandler
+    {
+        SQLiteConnection m_dbConnection;
+        bool isOpen;
+
+        public void InitializeConnection()
+        {
+            string basePath = @"..\..\Objects\\ecg.db";
+            m_dbConnection = new SQLiteConnection("Data Source=" + basePath + ";Version=3;");
+            m_dbConnection.Open();
+            isOpen = true;
+        }
+
+        public void CloseConnection()
+        {
+            m_dbConnection.Close();
+            isOpen = false;
+        }
+
+        public void AddPatientToTable(Patient patient)
+        {
+            if (isOpen)
+            {
+                string values = patient.ToSqlString();
+                string sql = "insert into patient (name, surname, age, sex, pesel, height, weight, ecg_id) values (" + values + ")";
+                SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public Patient GetPatient(string pesel)
+        {
+            Patient patient = null;
+            if (isOpen)
+            {
+                string sql = "select * from patient where pesel='" + pesel + "'";
+                SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                SQLiteDataReader reader = command.ExecuteReader();
+                reader.Read();
+                patient = new Patient();
+                patient.FirstName = (string)reader["name"];
+                patient.SurName = (string)reader["surname"];
+                patient.Age = (int)reader["age"];
+                patient.Pesel = pesel;
+                patient.Gender = (int)reader["sex"];
+                patient.Height = (int)reader["height"];
+                patient.Weight = (int)reader["weight"];
+                patient.Ecg_Id = (int)reader["ecg_id"];
+            }
+            return patient;
+        }
+
+        public List<Patient> GetAllPatients()
+        {
+            List<Patient> patients = new List<Patient>();
+            if (isOpen)
+            {
+                string sql = "select * from patient";
+                SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                SQLiteDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    Patient tempPatient = new Patient();
+                    tempPatient.FirstName = reader["name"].ToString();
+                    tempPatient.SurName = reader["surname"].ToString();
+                    tempPatient.Age = int.Parse(reader["age"].ToString());
+                    tempPatient.Pesel = reader["pesel"].ToString();
+                    tempPatient.Gender = int.Parse(reader["sex"].ToString());
+                    tempPatient.Height = int.Parse(reader["height"].ToString());
+                    tempPatient.Weight = int.Parse(reader["weight"].ToString());
+                    tempPatient.Ecg_Id = int.Parse(reader["ecg_id"].ToString());
+                    patients.Add(tempPatient);
+                }
+            }
+            return patients;
+        }
+
+        internal void UpdatePatient(Patient patient)
+        {
+            if (isOpen)
+            {
+                string values = patient.ToSqlUpdateString();
+                string sql = "update patient set " + values + " where pesel ='" + patient.Pesel + "'";
+                SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        internal void RemovePatient(Patient patient)
+        {
+            if (isOpen)
+            {
+                string sql = "delete from patient where pesel ='" + patient.Pesel + "'";
+                SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                command.ExecuteNonQuery();
+            }
+        }
+    }
+}

@@ -40,6 +40,9 @@ namespace KWDP.View
             PeselTextBox.Text = Patient.Pesel;
             if (Patient.Gender >= 0)
                 GenderComboBox.SelectedIndex = Patient.Gender;
+
+            WeightTextBox.Text = Patient.Weight.ToString();
+            HeightTextBox.Text = Patient.Height.ToString();
         }
 
         private void SavePatient()
@@ -47,6 +50,8 @@ namespace KWDP.View
             var name = NameTextBox.Text;
             var surname = SurNameTextBox.Text;
             var age = AgeTextBox.Text;
+            var weight = WeightTextBox.Text;
+            var height = HeightTextBox.Text;
             var pesel = PeselTextBox.Text;
             if (string.IsNullOrEmpty(pesel))
                 return;
@@ -63,11 +68,32 @@ namespace KWDP.View
             {
                 patient.Age = -1;
             }
+            int parsedHeight;
+            if (int.TryParse(height, out parsedHeight))
+            {
+                patient.Height = parsedHeight;
+            }
+            else
+            {
+                patient.Height = -1;
+            }
+            int parsedWeight;
+            if (int.TryParse(weight, out parsedWeight))
+            {
+                patient.Weight = parsedWeight;
+            }
+            else
+            {
+                patient.Weight = -1;
+            }
             patient.Pesel = pesel;
             patient.Gender = gender;
 
-            PatientsList[Index] = patient;
-                
+            DBHandler conn = new DBHandler();
+            conn.InitializeConnection();
+            conn.UpdatePatient(patient);
+            conn.CloseConnection();
+
         }
 
         private void LoadEkgButton_Click(object sender, RoutedEventArgs e)
@@ -84,6 +110,7 @@ namespace KWDP.View
         {
             SavePatient();
             PatientViewInstance.PatientsList = PatientsList;
+            PatientViewInstance.LoadPatientsList();
             this.Content = PatientViewInstance;
         }
 

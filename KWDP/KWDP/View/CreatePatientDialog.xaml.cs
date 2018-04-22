@@ -95,11 +95,19 @@ namespace KWDP.View
             {
                 if (!isEditing)
                 {
-                    patientsList.Add(patient);
+                    //patientsList.Add(patient);
+                    DBHandler conn = new DBHandler();
+                    conn.InitializeConnection();
+                    conn.AddPatientToTable(patient);
+                    conn.CloseConnection();
                 }
                 else
                 {
-                    patientsList[Index] = patient;
+                    DBHandler conn = new DBHandler();
+                    conn.InitializeConnection();
+                    conn.UpdatePatient(patient);
+                    conn.CloseConnection();
+                    //patientsList[Index] = patient;
                 }
                 this.Close();
             }

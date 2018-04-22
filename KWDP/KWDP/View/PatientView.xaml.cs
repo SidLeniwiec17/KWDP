@@ -38,14 +38,24 @@ namespace KWDP.View
             HideSzczegolySection();
         }
 
-        private void LoadPatientsList()
+        public void LoadPatientsList()
         {
-            var a = new Patient("Jan", "Kowalski", 18, "93827193821", 1);
-            var b = new Patient("Adam", "Adamski", 19, "93827193822", 1);
-            var c = new Patient("Tomasz", "Nowak", 20, "93827193823", 1);
-            PatientsList.Add(a);
-            PatientsList.Add(b);
-            PatientsList.Add(c);
+            PatientsList.Clear();
+            DBHandler conn = new DBHandler();
+            conn.InitializeConnection();
+            List<Patient> patients = conn.GetAllPatients();
+            conn.CloseConnection();
+            for (int i = 0; i < patients.Count; i++)
+            {
+                PatientsList.Add(patients.ElementAt(i));
+            }
+
+            /* var a = new Patient("Jan", "Kowalski", 18, "93827193821", 1);
+             var b = new Patient("Adam", "Adamski", 19, "93827193822", 1);
+             var c = new Patient("Tomasz", "Nowak", 20, "93827193823", 1);
+             PatientsList.Add(a);
+             PatientsList.Add(b);
+             PatientsList.Add(c);*/
         }
 
         private void HideSzczegolySection()
@@ -106,6 +116,7 @@ namespace KWDP.View
         {
             CreatePatientDialog = new CreatePatientDialog(PatientsList);
             CreatePatientDialog.ShowDialog();
+            LoadPatientsList();
         }
 
         private void DeletePatientButton_Click(object sender, RoutedEventArgs e)
@@ -115,7 +126,13 @@ namespace KWDP.View
                 if (PatientsList?.Count > 0)
                 {
                     var elementToRemove = (Patient)PatientsListView.SelectedItem;
-                    PatientsList.Remove(elementToRemove);
+
+                    DBHandler conn = new DBHandler();
+                    conn.InitializeConnection();
+                    conn.RemovePatient(elementToRemove);
+                    conn.CloseConnection();
+                    
+                    LoadPatientsList();
                 }
                 else
                 {
@@ -135,6 +152,7 @@ namespace KWDP.View
             {
                 CreatePatientDialog = new CreatePatientDialog(PatientsList, selectetPatient);
                 CreatePatientDialog.ShowDialog();
+                LoadPatientsList();
             }
         }
 
@@ -161,12 +179,12 @@ namespace KWDP.View
         private void ShowError(string message)
         {
             MessageBox.Show(message, "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
-        }        
+        }
 
         private void PatientsListView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             ICollectionView view = CollectionViewSource.GetDefaultView(PatientsListView);
             view.Refresh();
-        }      
+        }
     }
 }

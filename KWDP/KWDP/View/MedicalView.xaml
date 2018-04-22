@@ -20,6 +20,8 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -31,6 +33,8 @@
             <Label Name="PodgladAgeLabel" Grid.Row="3" Grid.Column="0" Style="{StaticResource SmallLabel}" Content="Wiek :"/>
             <Label Name="PodgladPeselLabel" Grid.Row="4" Grid.Column="0" Style="{StaticResource SmallLabel}" Content="Pesel :"/>
             <Label Name="PodgladGenderLabel" Grid.Row="5" Grid.Column="0" Style="{StaticResource SmallLabel}" Content="Płeć :"/>
+            <Label Name="PodgladHeightLabel" Grid.Row="6" Grid.Column="0" Style="{StaticResource SmallLabel}" Content="Wzrost :"/>
+            <Label Name="PodgladWeightLabel" Grid.Row="7" Grid.Column="0" Style="{StaticResource SmallLabel}" Content="Waga :"/>
             <TextBox Name="NameTextBox" Grid.Row="1" Grid.Column="1" Style="{StaticResource TextBox}" />
             <TextBox Name="SurNameTextBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource TextBox}" />
             <TextBox Name="AgeTextBox" Grid.Row="3" Grid.Column="1" Style="{StaticResource TextBox}" />
@@ -39,6 +43,8 @@
                 <ComboBoxItem Name="cbGenderK">Kobieta</ComboBoxItem>
                 <ComboBoxItem Name="cbGenderM">Mężczyzna</ComboBoxItem>
             </ComboBox>
+            <TextBox Name="HeightTextBox" Grid.Row="6" Grid.Column="1" Style="{StaticResource TextBox}" />
+            <TextBox Name="WeightTextBox" Grid.Row="7" Grid.Column="1" Style="{StaticResource TextBox}" />
         </Grid>
         <Grid Grid.Column ="1"  >
             <Grid.RowDefinitions>
