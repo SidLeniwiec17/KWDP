@@ -19,7 +19,9 @@ CREATE TABLE patient(
 
 CREATE TABLE question(
 	id INTEGER PRIMARY KEY,
-	content TEXT
+	content TEXT,
+	description TEXT,
+	type INTEGER
 );
 
 CREATE TABLE patient_answer(
