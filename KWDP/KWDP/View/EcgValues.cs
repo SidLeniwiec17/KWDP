@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace KWDP.View
 {
@@ -15,10 +16,9 @@ namespace KWDP.View
             string[] values = csvLine.Split('\t');
 
             EcgValues ecg = new EcgValues();
-
             ecg.SampleNumber = int.Parse(values[0]);
-            ecg.FirstCanal = float.Parse(values[1]);
-            ecg.SecondCanal = float.Parse(values[2]);
+            ecg.FirstCanal = float.Parse(values[1], CultureInfo.InvariantCulture);
+            ecg.SecondCanal = float.Parse(values[2], CultureInfo.InvariantCulture);
 
             return ecg;
         }

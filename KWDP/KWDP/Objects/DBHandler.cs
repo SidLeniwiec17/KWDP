@@ -4,6 +4,7 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace KWDP.Objects
 {
@@ -107,23 +108,37 @@ namespace KWDP.Objects
 
         internal void InsertEkg(int ecg_id, string filename)
         {
-            string sql = "insert into ecg (id, ecg)" + "values ('" + ecg_id + "', " + "'" + filename + "')";
-            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-            command.ExecuteNonQuery();
+            if (isOpen)
+            {
+                try
+                {
+                    string sql = "insert into ecg (id, ecg)" + "values ('" + ecg_id + "', " + "'" + filename + "')";
+                    SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                    command.ExecuteNonQuery();
+                }
+                catch( Exception ex)
+                {
+                    MessageBox.Show("ECG juz w bazie !");
+                }
+            }
         }
 
         internal string GetEcg(int ecg_id)
         {
-            string sql = "select ecg from ecg where id = '" + ecg_id + "'";
-            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
-            SQLiteDataReader reader = command.ExecuteReader();
-
             string filename = null;
-            while (reader.Read())
-            {
-                filename = reader["ecg"].ToString();
-            }
 
+            if (isOpen)
+            {
+                string sql = "select ecg from ecg where id = '" + ecg_id + "'";
+                SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                SQLiteDataReader reader = command.ExecuteReader();
+
+                
+                while (reader.Read())
+                {
+                    filename = reader["ecg"].ToString();
+                }
+            }
             return filename;
         }
     }
