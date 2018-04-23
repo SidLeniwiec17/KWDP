@@ -22,6 +22,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -45,6 +46,10 @@
             </ComboBox>
             <TextBox Name="HeightTextBox" Grid.Row="6" Grid.Column="1" Style="{StaticResource TextBox}" />
             <TextBox Name="WeightTextBox" Grid.Row="7" Grid.Column="1" Style="{StaticResource TextBox}" />
+            <ListView Name="EkgList" Grid.Row="8">
+
+            </ListView>
+
         </Grid>
         <Grid Grid.Column ="1"  >
             <Grid.RowDefinitions>
@@ -52,11 +57,13 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Style="{StaticResource BigTitleLabel}" Content="Akcje :"/>
             <Button x:Name="LoadEkgButton" Grid.Row="1"  Style="{StaticResource AddButtonStyle}" Content="Wgraj EKG" Click="LoadEkgButton_Click"/>
-            <Button x:Name="LoadQuestionsButton" Grid.Row="2"  Style="{StaticResource AddButtonStyle}" Content="Uzupełnij wywiad medyczny" Click="LoadQuestionsButton_Click"/>
-            <Button x:Name="BackButton" Grid.Row="3"  Style="{StaticResource AddButtonStyle}" Content="WSTECZ" Click="BackButton_Click"/>
+            <Button x:Name="ViewEkgButton" Grid.Row="2"  Style="{StaticResource AddButtonStyle}" Content="Przejrzyj EKG" Click="ViewEkgButton_Click"/>
+            <Button x:Name="LoadQuestionsButton" Grid.Row="3"  Style="{StaticResource AddButtonStyle}" Content="Uzupełnij wywiad medyczny" Click="LoadQuestionsButton_Click"/>
+            <Button x:Name="BackButton" Grid.Row="4"  Style="{StaticResource AddButtonStyle}" Content="WSTECZ" Click="BackButton_Click"/>
         </Grid>
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
@@ -66,11 +73,24 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Style="{StaticResource BigTitleLabel}" Content="EKG"/>
-                <GroupBox Grid.Row="1" Header="Wykres EKG" HorizontalAlignment="Stretch" Margin="5,5,5,5" VerticalAlignment="Stretch" >
-                </GroupBox>
+            <GroupBox Grid.Row="1" Header="Wykres EKG" HorizontalAlignment="Stretch" Margin="5,5,5,5" VerticalAlignment="Stretch" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Image Grid.Row="0" Name="EcgImage">
+
+                    </Image>
+                    
+                    
+                </Grid>
+                
+
+            </GroupBox>
             <Label Grid.Row="2" Style="{StaticResource BigTitleLabel}" Content="Diagnoza"/>
-                <GroupBox Grid.Row="4" Header="Proponowana Diagnoza" HorizontalAlignment="Stretch" Margin="5,5,5,5" VerticalAlignment="Stretch" >
-                </GroupBox>
+            <GroupBox Grid.Row="4" Header="Proponowana Diagnoza" HorizontalAlignment="Stretch" Margin="5,5,5,5" VerticalAlignment="Stretch" >
+            </GroupBox>
         </Grid>
     </Grid>
 </UserControl>

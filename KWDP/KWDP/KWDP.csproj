@@ -60,6 +60,7 @@
       <HintPath>..\packages\System.Data.SQLite.Linq.1.0.108.0\lib\net451\System.Data.SQLite.Linq.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -87,6 +88,7 @@
     <Compile Include="View\CreatePatientDialog.xaml.cs">
       <DependentUpon>CreatePatientDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\EcgValues.cs" />
     <Compile Include="View\MedicalView.xaml.cs">
       <DependentUpon>MedicalView.xaml</DependentUpon>
     </Compile>

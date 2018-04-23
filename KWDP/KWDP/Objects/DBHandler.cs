@@ -104,5 +104,27 @@ namespace KWDP.Objects
                 command.ExecuteNonQuery();
             }
         }
+
+        internal void InsertEkg(int ecg_id, string filename)
+        {
+            string sql = "insert into ecg (id, ecg)" + "values ('" + ecg_id + "', " + "'" + filename + "')";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            command.ExecuteNonQuery();
+        }
+
+        internal string GetEcg(int ecg_id)
+        {
+            string sql = "select ecg from ecg where id = '" + ecg_id + "'";
+            SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+            SQLiteDataReader reader = command.ExecuteReader();
+
+            string filename = null;
+            while (reader.Read())
+            {
+                filename = reader["ecg"].ToString();
+            }
+
+            return filename;
+        }
     }
 }

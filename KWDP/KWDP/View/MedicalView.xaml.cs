@@ -4,16 +4,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
+using Microsoft.Win32;
+using System.IO;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace KWDP.View
 {
@@ -29,7 +25,7 @@ namespace KWDP.View
 
         public MedicalView()
         {
-            InitializeComponent();            
+            InitializeComponent();
         }
 
         private void LoadData()
@@ -98,7 +94,91 @@ namespace KWDP.View
 
         private void LoadEkgButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(Msg.TO_BE_CONTINUED);
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                if (!Directory.Exists("./ecg"))
+                {
+                    Directory.CreateDirectory("./ecg");
+                }
+
+                File.Copy(openFileDialog.FileName, "./ecg/" + openFileDialog.SafeFileName, true);
+                // copy to local folder
+
+
+
+                DBHandler conn = new DBHandler();
+                conn.InitializeConnection();
+                conn.InsertEkg(this.Patient.Ecg_Id, openFileDialog.SafeFileName);
+                conn.CloseConnection();
+
+                // copy to local folder
+            }
+
+            // insert path to db
+            // show path in listview
+        }
+
+        private void ViewEkgButton_Click(object sender, RoutedEventArgs e)
+        {
+            DBHandler conn = new DBHandler();
+            conn.InitializeConnection();
+            string filename = conn.GetEcg(this.Patient.Ecg_Id);
+            conn.CloseConnection();
+
+            if (filename != null)
+            {
+                EcgValues[] values = File.ReadAllLines("./ecg/" + filename)
+                                           .Skip(1)
+                                           .Select(v => EcgValues.FromCsv(v))
+                                           .ToArray();
+
+                var bitmap = this.DrawEcg(values);
+
+                BitmapSource bitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                    bitmap.GetHbitmap(),
+                    IntPtr.Zero,
+                    Int32Rect.Empty,
+                    BitmapSizeOptions.FromEmptyOptions()
+                    );
+
+                this.EcgImage.Source = bitmapSource;
+            }
+
+        }
+
+        private Bitmap DrawEcg(EcgValues[] values)
+        {
+            float[] firstCanal = values.Select(x => x.FirstCanal).ToArray();
+
+            Bitmap bmp = new Bitmap(firstCanal.Length, 1000);
+
+            
+
+            float maxValue = firstCanal.Max();
+
+            var samplesNumber = bmp.Width;
+            var maxAmplitude = bmp.Height / 2 - 1;
+            var baseLine = bmp.Height / 2;
+
+            var points = new List<PointF>();
+
+            for (int i = 0; i < samplesNumber; i++)
+            {
+                points.Add(new PointF(i, -firstCanal[i] / maxValue * maxAmplitude + baseLine));
+            }
+
+            //var points = firstCanal.Select((v) => new System.Drawing.PointF(
+            //    i,
+            //    (float)(-v / maxValue) * maxAmplitude) + baseLine)).ToArray();
+
+            using (var g = Graphics.FromImage(bmp))
+            {
+                g.DrawCurve(new Pen(Color.Red, 8), points.ToArray());
+            }
+
+            return bmp;
+
         }
 
         private void LoadQuestionsButton_Click(object sender, RoutedEventArgs e)
