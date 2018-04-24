@@ -21,13 +21,29 @@
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition/>
+                <RowDefinition Height="3*"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition/>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBox Name="mainQuestion" HorizontalAlignment="Stretch" Grid.Row="0" Margin="2,2,2,2" TextWrapping="Wrap" Text="" VerticalAlignment="Stretch" />
+                <TextBox Name="helperText" HorizontalAlignment="Stretch" Grid.Row="1" Margin="2,2,2,2" TextWrapping="Wrap" Text="" VerticalAlignment="Stretch" />
+            </Grid>
             <Label Name="TitleNameLabel" Grid.Row="0" Style="{StaticResource SmallLabelLeft2}" Content="Pytanie :"/>
             <Label Name="OdpNameLabel" Grid.Row="2" Style="{StaticResource SmallLabelLeft2}" Content="Odpowiedź :"/>
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <CheckBox Content="Tak" Grid.Column="0" HorizontalAlignment="Center" Style="{StaticResource CheckBox}" VerticalAlignment="Center"/>
+                <CheckBox Content="Nie" Grid.Column="1" HorizontalAlignment="Center" Style="{StaticResource CheckBox}" VerticalAlignment="Center"/>
+            </Grid>
             <Grid Grid.Row="4">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -37,5 +53,6 @@
                 <Button x:Name="ZapiszButton" Grid.Column="1"  Style="{StaticResource AddButtonStyle}" Content="Zapisz" Click="ZapiszButton_Click" />
             </Grid>            
         </Grid>
+        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Margin="385,309,-64,-184" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
     </Grid>
 </Window>

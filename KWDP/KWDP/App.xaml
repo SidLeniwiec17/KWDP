@@ -56,6 +56,14 @@
                 <Setter Property="HorizontalContentAlignment" Value="Left"/>
                 <Setter Property="FontWeight" Value="Medium"/>
             </Style>
+            <Style x:Key="CheckBox" TargetType="CheckBox">
+                <Setter Property="FontSize" Value="15"/>
+                <Setter Property="Background" Value="White"/>
+                <Setter Property="Margin" Value="5,5,5,5"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="FontWeight" Value="Medium"/>
+            </Style>
             <Style TargetType="Button">
                 <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
                 <Setter Property="VerticalContentAlignment" Value="Center"/>
