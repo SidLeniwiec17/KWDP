@@ -105,8 +105,6 @@ namespace KWDP.View
                 File.Copy(openFileDialog.FileName, "./ecg/" + openFileDialog.SafeFileName, true);
                 // copy to local folder
 
-
-
                 DBHandler conn = new DBHandler();
                 conn.InitializeConnection();
                 conn.InsertEkg(this.Patient.Ecg_Id, openFileDialog.SafeFileName);
@@ -151,9 +149,7 @@ namespace KWDP.View
         {
             float[] firstCanal = values.Select(x => x.FirstCanal).ToArray();
 
-            Bitmap bmp = new Bitmap(firstCanal.Length, 1000);
-
-            
+            Bitmap bmp = new Bitmap(firstCanal.Length, 1000);            
 
             float maxValue = firstCanal.Max();
 
@@ -183,7 +179,6 @@ namespace KWDP.View
 
         private void LoadQuestionsButton_Click(object sender, RoutedEventArgs e)
         {
-            //MessageBox.Show(Msg.TO_BE_CONTINUED);
             Wywiad wywiad = new Wywiad();
             wywiad.ShowDialog();
         }

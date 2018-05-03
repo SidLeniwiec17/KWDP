@@ -80,6 +80,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Objects\DBHandler.cs" />
+    <Compile Include="Objects\DbQuestion.cs" />
+    <Compile Include="Objects\DbQuestionInitialiazer.cs" />
     <Compile Include="Objects\Msg.cs" />
     <Compile Include="Objects\Patient.cs" />
     <Compile Include="Objects\Wywiad.xaml.cs">
@@ -88,7 +90,7 @@
     <Compile Include="View\CreatePatientDialog.xaml.cs">
       <DependentUpon>CreatePatientDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\EcgValues.cs" />
+    <Compile Include="Objects\EcgValues.cs" />
     <Compile Include="View\MedicalView.xaml.cs">
       <DependentUpon>MedicalView.xaml</DependentUpon>
     </Compile>

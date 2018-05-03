@@ -46,9 +46,9 @@
             </ComboBox>
             <TextBox Name="HeightTextBox" Grid.Row="6" Grid.Column="1" Style="{StaticResource TextBox}" />
             <TextBox Name="WeightTextBox" Grid.Row="7" Grid.Column="1" Style="{StaticResource TextBox}" />
-            <ListView Name="EkgList" Grid.Row="8">
+            <!--<ListView Name="EkgList" Grid.Row="8">
 
-            </ListView>
+            </ListView>-->
 
         </Grid>
         <Grid Grid.Column ="1"  >

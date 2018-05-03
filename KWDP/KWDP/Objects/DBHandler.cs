@@ -38,6 +38,17 @@ namespace KWDP.Objects
             }
         }
 
+        public void AddQuestionToTable(DbQuestion question)
+        {
+            if (isOpen)
+            {
+                string values = question.ToSqlString();
+                string sql = "insert into question (content, description, type) values (" + values + ")";
+                SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                command.ExecuteNonQuery();
+            }
+        }
+
         public Patient GetPatient(string pesel)
         {
             Patient patient = null;
@@ -83,6 +94,26 @@ namespace KWDP.Objects
                 }
             }
             return patients;
+        }
+
+        public List<DbQuestion> GetAllQuestions()
+        {
+            List<DbQuestion> questions = new List<DbQuestion>();
+            if (isOpen)
+            {
+                string sql = "select * from question";
+                SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                SQLiteDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    DbQuestion tempPquestiont = new DbQuestion();
+                    tempPquestiont.Content = reader["content"].ToString();
+                    tempPquestiont.Description = reader["description"].ToString();
+                    tempPquestiont.Type = int.Parse(reader["type"].ToString());
+                    questions.Add(tempPquestiont);
+                }
+            }
+            return questions;
         }
 
         internal void UpdatePatient(Patient patient)

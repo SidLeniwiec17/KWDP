@@ -35,6 +35,7 @@ namespace KWDP.View
             InitializeComponent();
 
             LoadPatientsList();
+            DbQuestionInitialiazer.InitializeQuestions();
             HideSzczegolySection();
         }
 
