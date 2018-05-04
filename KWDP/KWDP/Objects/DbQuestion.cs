@@ -8,6 +8,7 @@ namespace KWDP.Objects
 {
     public class DbQuestion
     {
+        public int Id { get; set; }
         public string Content { get; set; }
         public string Description { get; set; }
         public int Type { get; set; }
@@ -18,7 +19,7 @@ namespace KWDP.Objects
         }
 
         public DbQuestion(string cont, string desc, int type)
-        {
+        {            
             Content = cont;
             Description = desc;
             Type = type;

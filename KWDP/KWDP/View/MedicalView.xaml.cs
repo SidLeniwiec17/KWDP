@@ -179,7 +179,8 @@ namespace KWDP.View
 
         private void LoadQuestionsButton_Click(object sender, RoutedEventArgs e)
         {
-            Wywiad wywiad = new Wywiad();
+            var patientId = Patient.Id;
+            Wywiad wywiad = new Wywiad(patientId);
             wywiad.ShowDialog();
         }
 

@@ -16,6 +16,7 @@ namespace KWDP.Objects
         public int Height { get; set; }
         public int Weight { get; set; }
         public int Ecg_Id { get; set; }
+        public int Id { get; set; }
 
         public Patient()
         {

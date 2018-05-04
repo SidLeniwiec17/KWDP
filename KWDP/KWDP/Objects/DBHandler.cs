@@ -66,6 +66,7 @@ namespace KWDP.Objects
                 patient.Gender = (int)reader["sex"];
                 patient.Height = (int)reader["height"];
                 patient.Weight = (int)reader["weight"];
+                patient.Id = (int)reader["id"];
                 patient.Ecg_Id = (int)reader["ecg_id"];
             }
             return patient;
@@ -89,6 +90,7 @@ namespace KWDP.Objects
                     tempPatient.Gender = int.Parse(reader["sex"].ToString());
                     tempPatient.Height = int.Parse(reader["height"].ToString());
                     tempPatient.Weight = int.Parse(reader["weight"].ToString());
+                    tempPatient.Id = int.Parse(reader["id"].ToString());
                     tempPatient.Ecg_Id = int.Parse(reader["ecg_id"].ToString());
                     patients.Add(tempPatient);
                 }
@@ -110,6 +112,7 @@ namespace KWDP.Objects
                     tempPquestiont.Content = reader["content"].ToString();
                     tempPquestiont.Description = reader["description"].ToString();
                     tempPquestiont.Type = int.Parse(reader["type"].ToString());
+                    tempPquestiont.Id = int.Parse(reader["id"].ToString());
                     questions.Add(tempPquestiont);
                 }
             }
@@ -131,7 +134,7 @@ namespace KWDP.Objects
         {
             if (isOpen)
             {
-                string sql = "delete from patient where pesel ='" + patient.Pesel + "'";
+                string sql = "delete from patient where id ='" + patient.Id + "'";
                 SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
                 command.ExecuteNonQuery();
             }
@@ -147,7 +150,7 @@ namespace KWDP.Objects
                     SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
                     command.ExecuteNonQuery();
                 }
-                catch( Exception ex)
+                catch (Exception ex)
                 {
                     MessageBox.Show("ECG juz w bazie !");
                 }
@@ -164,13 +167,59 @@ namespace KWDP.Objects
                 SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
                 SQLiteDataReader reader = command.ExecuteReader();
 
-                
+
                 while (reader.Read())
                 {
                     filename = reader["ecg"].ToString();
                 }
             }
             return filename;
+        }
+
+        internal List<DbAnswer> GetPatientAnswers(int patientId)
+        {
+            List<DbAnswer> answers = new List<DbAnswer>();
+
+            if (isOpen)
+            {
+                DbAnswer tempAnsw = new DbAnswer();
+                string sql = "select * from patient_answer where patient_id = " + patientId;
+                SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                SQLiteDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    tempAnsw.Answer = reader["answer"].ToString();
+                    tempAnsw.QuestionId = int.Parse(reader["question_id"].ToString());
+                    tempAnsw.PatientId = int.Parse(reader["patient_id"].ToString());
+                    answers.Add(tempAnsw);
+                }
+            }
+            return answers;
+        }
+
+        internal void InitializePatientAnswer(int patientId, DbAnswer answer)
+        {
+            if (isOpen)
+            {
+                string values = answer.ToSqlString();
+                string sql = "insert into patient_answer (patient_id, question_id, answer) values (" + values + ")";
+                SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        internal void UpdatePatientAnswers(int patientId, List<DbAnswer> answers)
+        {
+            if (isOpen)
+            {
+                for (int i = 0; i < answers.Count; i++)
+                {
+                    string values = answers[i].ToSqlUpdateString();
+                    string sql = "update patient_answer set " + values + " where patient_id =" + answers[i].PatientId + " and question_id =" + answers[i].QuestionId;
+                    SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                    command.ExecuteNonQuery();
+                }
+            }
         }
     }
 }
