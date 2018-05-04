@@ -41,11 +41,11 @@ namespace KWDP.Objects
             conn.CloseConnection();
             QuestionsListView.ItemsSource = Questions;
 
-            for(int i = 0; i < Questions.Count; i++)
+            for (int i = 0; i < Questions.Count; i++)
             {
                 var question = (DbQuestion)QuestionsListView.Items[i];
                 for (int j = 0; j < Answers.Count; j++)
-                {                    
+                {
                     if (Answers.ElementAt(j).QuestionId == question.Id)
                     {
                         var answer = Answers.ElementAt(j).Answer;
@@ -64,108 +64,122 @@ namespace KWDP.Objects
         {
             DBHandler conn = new DBHandler();
             conn.InitializeConnection();
-            Answers = conn.GetPatientAnswers(PatientID);           
+            Answers = conn.GetPatientAnswers(PatientID);
             if (Answers.Count < 1)
             {
-                var questions = conn.GetAllQuestions();
+                List<DbAnswer> answers = PrepareEmptyAnswers();
                 //tworze 16 roznych rekordow patient_answer
-                for (int i = 0; i < questions.Count; i++)
+                for (int i = 0; i < answers.Count; i++)
                 {
-                    DbAnswer tempAnsw = new DbAnswer("", PatientID, questions[i].Id);
-                    conn.InitializePatientAnswer(PatientID, tempAnsw);
+                    conn.InitializePatientAnswer(PatientID, answers.ElementAt(i));
                 }
                 //po sprawedzeniu jest 16 IDENTYCZNYCH rekordow patient_answer
-                Answers = conn.GetPatientAnswers(PatientID);                
+                Answers = conn.GetPatientAnswers(PatientID);
             }
             conn.CloseConnection();
         }
 
-        private void WrocButton_Click(object sender, RoutedEventArgs e)
+        public List<DbAnswer> PrepareEmptyAnswers()
         {
-            this.Close();
-        }
-
-        private void ZapiszButton_Click(object sender, RoutedEventArgs e)
-        {
+            List<DbAnswer> answers = new List<DbAnswer>();
             DBHandler conn = new DBHandler();
             conn.InitializeConnection();
-            conn.UpdatePatientAnswers(PatientID, Answers);
+            List<DbQuestion> questions = conn.GetAllQuestions();
             conn.CloseConnection();
-
-            this.Close();
+            for (int i = 0; i < questions.Count; i++)
+            {
+                DbAnswer tempAnsw = new DbAnswer("", PatientID, questions[i].Id);
+                answers.Add(tempAnsw);
+            }    
+            return answers;
         }
 
-        private void QuestionsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void WrocButton_Click(object sender, RoutedEventArgs e)
+    {
+        this.Close();
+    }
+
+    private void ZapiszButton_Click(object sender, RoutedEventArgs e)
+    {
+        DBHandler conn = new DBHandler();
+        conn.InitializeConnection();
+        conn.UpdatePatientAnswers(PatientID, Answers);
+        conn.CloseConnection();
+
+        this.Close();
+    }
+
+    private void QuestionsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var selectetquestion = (DbQuestion)QuestionsListView.SelectedItem;
+        if (selectetquestion != null)
         {
-            var selectetquestion = (DbQuestion)QuestionsListView.SelectedItem;
-            if (selectetquestion != null)
+            mainQuestion.Text = "";
+            helperText.Text = "";
+            CheckBoxTak.IsChecked = false;
+            CheckBoxNie.IsChecked = false;
+
+            mainQuestion.Text = selectetquestion.Content;
+            helperText.Text = selectetquestion.Description;
+            string answer = "";
+            for (int i = 0; i < Answers.Count; i++)
             {
-                mainQuestion.Text = "";
-                helperText.Text = "";
-                CheckBoxTak.IsChecked = false;
-                CheckBoxNie.IsChecked = false;
-
-                mainQuestion.Text = selectetquestion.Content;
-                helperText.Text = selectetquestion.Description;
-                string answer = "";
-                for(int i = 0; i < Answers.Count; i++)
+                if (Answers.ElementAt(i).QuestionId == selectetquestion.Id)
                 {
-                    if (Answers.ElementAt(i).QuestionId == selectetquestion.Id)
-                    {
-                        answer = Answers.ElementAt(i).Answer;
-                    }
-                }
-
-                if(answer.Equals("0") || answer.ToLower().Equals("false") || answer.ToLower().Equals("nie"))
-                {
-                    CheckBoxNie.IsChecked = true;
-                }
-                else if (answer.Equals("1") || answer.ToLower().Equals("true") || answer.ToLower().Equals("tak"))
-                {
-                    CheckBoxTak.IsChecked = true;
+                    answer = Answers.ElementAt(i).Answer;
                 }
             }
-            else
+
+            if (answer.Equals("0") || answer.ToLower().Equals("false") || answer.ToLower().Equals("nie"))
             {
-                mainQuestion.Text = "";
-                helperText.Text = "";
-                CheckBoxTak.IsChecked = false;
-                CheckBoxNie.IsChecked = false;
+                CheckBoxNie.IsChecked = true;
+            }
+            else if (answer.Equals("1") || answer.ToLower().Equals("true") || answer.ToLower().Equals("tak"))
+            {
+                CheckBoxTak.IsChecked = true;
             }
         }
-
-        private void CheckBoxTak_Checked(object sender, RoutedEventArgs e)
+        else
         {
-            var selectetquestion = (DbQuestion)QuestionsListView.SelectedItem;
-            if (selectetquestion != null)
-            {
-                for (int i = 0; i < Answers.Count; i++)
-                {
-                    if (Answers.ElementAt(i).QuestionId == selectetquestion.Id)
-                    {
-                        Answers.ElementAt(i).Answer = "tak";
-                    }
-                }
-            }
-            Questions[QuestionsListView.SelectedIndex].Type = 1;
-            QuestionsListView.ItemsSource = Questions;
-        }
-
-        private void CheckBoxNie_Checked(object sender, RoutedEventArgs e)
-        {
-            var selectetquestion = (DbQuestion)QuestionsListView.SelectedItem;
-            if (selectetquestion != null)
-            {
-                for (int i = 0; i < Answers.Count; i++)
-                {
-                    if (Answers.ElementAt(i).QuestionId == selectetquestion.Id)
-                    {
-                        Answers.ElementAt(i).Answer = "nie";
-                    }
-                }
-            }
-            Questions[QuestionsListView.SelectedIndex].Type = 1;
-            QuestionsListView.ItemsSource = Questions;
+            mainQuestion.Text = "";
+            helperText.Text = "";
+            CheckBoxTak.IsChecked = false;
+            CheckBoxNie.IsChecked = false;
         }
     }
+
+    private void CheckBoxTak_Checked(object sender, RoutedEventArgs e)
+    {
+        var selectetquestion = (DbQuestion)QuestionsListView.SelectedItem;
+        if (selectetquestion != null)
+        {
+            for (int i = 0; i < Answers.Count; i++)
+            {
+                if (Answers.ElementAt(i).QuestionId == selectetquestion.Id)
+                {
+                    Answers.ElementAt(i).Answer = "tak";
+                }
+            }
+        }
+        Questions[QuestionsListView.SelectedIndex].Type = 1;
+        QuestionsListView.ItemsSource = Questions;
+    }
+
+    private void CheckBoxNie_Checked(object sender, RoutedEventArgs e)
+    {
+        var selectetquestion = (DbQuestion)QuestionsListView.SelectedItem;
+        if (selectetquestion != null)
+        {
+            for (int i = 0; i < Answers.Count; i++)
+            {
+                if (Answers.ElementAt(i).QuestionId == selectetquestion.Id)
+                {
+                    Answers.ElementAt(i).Answer = "nie";
+                }
+            }
+        }
+        Questions[QuestionsListView.SelectedIndex].Type = 1;
+        QuestionsListView.ItemsSource = Questions;
+    }
+}
 }

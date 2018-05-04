@@ -119,7 +119,7 @@ namespace KWDP.Objects
             return questions;
         }
 
-        internal void UpdatePatient(Patient patient)
+        public void UpdatePatient(Patient patient)
         {
             if (isOpen)
             {
@@ -130,7 +130,7 @@ namespace KWDP.Objects
             }
         }
 
-        internal void RemovePatient(Patient patient)
+        public void RemovePatient(Patient patient)
         {
             if (isOpen)
             {
@@ -140,7 +140,7 @@ namespace KWDP.Objects
             }
         }
 
-        internal void InsertEkg(int ecg_id, string filename)
+        public void InsertEkg(int ecg_id, string filename)
         {
             if (isOpen)
             {
@@ -157,7 +157,7 @@ namespace KWDP.Objects
             }
         }
 
-        internal string GetEcg(int ecg_id)
+        public string GetEcg(int ecg_id)
         {
             string filename = null;
 
@@ -176,7 +176,7 @@ namespace KWDP.Objects
             return filename;
         }
 
-        internal List<DbAnswer> GetPatientAnswers(int patientId)
+        public List<DbAnswer> GetPatientAnswers(int patientId)
         {
             List<DbAnswer> answers = new List<DbAnswer>();
 
@@ -197,7 +197,7 @@ namespace KWDP.Objects
             return answers;
         }
 
-        internal void InitializePatientAnswer(int patientId, DbAnswer answer)
+        public void InitializePatientAnswer(int patientId, DbAnswer answer)
         {
             if (isOpen)
             {
@@ -208,7 +208,7 @@ namespace KWDP.Objects
             }
         }
 
-        internal void UpdatePatientAnswers(int patientId, List<DbAnswer> answers)
+        public void UpdatePatientAnswers(int patientId, List<DbAnswer> answers)
         {
             if (isOpen)
             {
