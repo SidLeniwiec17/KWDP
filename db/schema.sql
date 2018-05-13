@@ -1,7 +1,9 @@
 CREATE TABLE ecg(
 	id INTEGER PRIMARY KEY,
 	date TEXT,
-	ecg TEXT
+	ecg TEXT,
+	patient_id INTEGER,
+	FOREIGN KEY(patient_id) REFERENCES patient(id)
 );
 
 CREATE TABLE patient(
@@ -12,9 +14,7 @@ CREATE TABLE patient(
 	sex INTEGER,
 	pesel TEXT,
 	height INTEGER,
-	weight INTEGER,
-	ecg_id INTEGER,
-	FOREIGN KEY(ecg_id) REFERENCES ecg(id)
+	weight INTEGER
 );
 
 CREATE TABLE question(
