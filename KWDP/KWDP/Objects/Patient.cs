@@ -15,7 +15,6 @@ namespace KWDP.Objects
         public int Gender { get; set; }
         public int Height { get; set; }
         public int Weight { get; set; }
-        public int Ecg_Id { get; set; }
         public int Id { get; set; }
 
         public Patient()
@@ -41,8 +40,7 @@ namespace KWDP.Objects
             values += Gender + ", ";
             values += "'" + Pesel + "', ";
             values += Height + ", ";
-            values += Weight + ", ";
-            values += Ecg_Id;
+            values += Weight;
             return values;
         }
         
@@ -55,8 +53,7 @@ namespace KWDP.Objects
             values += "sex = " + Gender + ", ";
             values += "pesel = '" + Pesel + "', ";
             values += "height = " + Height + ", ";
-            values += "weight = " + Weight + ", ";
-            values += "ecg_id  = " + Ecg_Id;
+            values += "weight = " + Weight;
             return values;
         }
     }

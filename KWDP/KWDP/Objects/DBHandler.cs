@@ -32,7 +32,7 @@ namespace KWDP.Objects
             if (isOpen)
             {
                 string values = patient.ToSqlString();
-                string sql = "insert into patient (name, surname, age, sex, pesel, height, weight, ecg_id) values (" + values + ")";
+                string sql = "insert into patient (name, surname, age, sex, pesel, height, weight) values (" + values + ")";
                 SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
                 command.ExecuteNonQuery();
             }
@@ -67,7 +67,6 @@ namespace KWDP.Objects
                 patient.Height = (int)reader["height"];
                 patient.Weight = (int)reader["weight"];
                 patient.Id = (int)reader["id"];
-                patient.Ecg_Id = (int)reader["ecg_id"];
             }
             return patient;
         }
@@ -91,7 +90,6 @@ namespace KWDP.Objects
                     tempPatient.Height = int.Parse(reader["height"].ToString());
                     tempPatient.Weight = int.Parse(reader["weight"].ToString());
                     tempPatient.Id = int.Parse(reader["id"].ToString());
-                    tempPatient.Ecg_Id = int.Parse(reader["ecg_id"].ToString());
                     patients.Add(tempPatient);
                 }
             }
@@ -124,7 +122,7 @@ namespace KWDP.Objects
             if (isOpen)
             {
                 string values = patient.ToSqlUpdateString();
-                string sql = "update patient set " + values + " where pesel ='" + patient.Pesel + "'";
+                string sql = "update patient set " + values + " where id = " + patient.Id + "";
                 SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
                 command.ExecuteNonQuery();
             }
@@ -134,19 +132,20 @@ namespace KWDP.Objects
         {
             if (isOpen)
             {
-                string sql = "delete from patient where id ='" + patient.Id + "'";
+                string sql = "delete from patient where id = " + patient.Id + "";
                 SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
                 command.ExecuteNonQuery();
             }
         }
 
-        public void InsertEkg(int ecg_id, string filename)
+        public void InsertEkg(string filename, DateTime date, Patient patient)
         {
             if (isOpen)
             {
                 try
                 {
-                    string sql = "insert into ecg (id, ecg)" + "values ('" + ecg_id + "', " + "'" + filename + "')";
+                    string sql = "insert into ecg (ecg, date, patient_id)" + 
+                        " values ('" + filename + "', '" + date.ToString("dd-MM-yyyy") + "', " + patient.Id +")" ;
                     SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
                     command.ExecuteNonQuery();
                 }
@@ -163,7 +162,7 @@ namespace KWDP.Objects
 
             if (isOpen)
             {
-                string sql = "select ecg from ecg where id = '" + ecg_id + "'";
+                string sql = "select ecg from ecg where id = " + ecg_id + "";
                 SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
                 SQLiteDataReader reader = command.ExecuteReader();
 
@@ -174,6 +173,22 @@ namespace KWDP.Objects
                 }
             }
             return filename;
+        }
+
+        public List<string> GetPatientEcgFilenames(Patient patient)
+        {
+            List<string> filenames = new List<string>();
+            if (isOpen)
+            {
+                string sql = "select ecg from ecg where patient_id = " + patient.Id;
+                SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                SQLiteDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    filenames.Add(reader["ecg"].ToString());
+                }
+            }
+            return filenames;
         }
 
         public List<DbAnswer> GetPatientAnswers(int patientId)
@@ -197,7 +212,7 @@ namespace KWDP.Objects
             return answers;
         }
 
-        public void InitializePatientAnswer(int patientId, DbAnswer answer)
+        public void InitializePatientAnswer(DbAnswer answer)
         {
             if (isOpen)
             {
@@ -208,14 +223,14 @@ namespace KWDP.Objects
             }
         }
 
-        public void UpdatePatientAnswers(int patientId, List<DbAnswer> answers)
+        public void UpdatePatientAnswers(List<DbAnswer> answers)
         {
             if (isOpen)
             {
                 for (int i = 0; i < answers.Count; i++)
                 {
                     string values = answers[i].ToSqlUpdateString();
-                    string sql = "update patient_answer set " + values + " where patient_id =" + answers[i].PatientId + " and question_id =" + answers[i].QuestionId;
+                    string sql = "update patient_answer set " + values + " where patient_id = " + answers[i].PatientId + " and question_id = " + answers[i].QuestionId;
                     SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
                     command.ExecuteNonQuery();
                 }

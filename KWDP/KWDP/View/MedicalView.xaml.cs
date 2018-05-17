@@ -52,42 +52,41 @@ namespace KWDP.View
             if (string.IsNullOrEmpty(pesel))
                 return;
             var gender = GenderComboBox.SelectedIndex;
-            var patient = new Patient();
-            patient.FirstName = name;
-            patient.SurName = surname;
+            Patient.FirstName = name;
+            Patient.SurName = surname;
             int parsedAge;
             if (int.TryParse(age, out parsedAge))
             {
-                patient.Age = parsedAge;
+                Patient.Age = parsedAge;
             }
             else
             {
-                patient.Age = -1;
+                Patient.Age = -1;
             }
             int parsedHeight;
             if (int.TryParse(height, out parsedHeight))
             {
-                patient.Height = parsedHeight;
+                Patient.Height = parsedHeight;
             }
             else
             {
-                patient.Height = -1;
+                Patient.Height = -1;
             }
             int parsedWeight;
             if (int.TryParse(weight, out parsedWeight))
             {
-                patient.Weight = parsedWeight;
+                Patient.Weight = parsedWeight;
             }
             else
             {
-                patient.Weight = -1;
+                Patient.Weight = -1;
             }
-            patient.Pesel = pesel;
-            patient.Gender = gender;
+            Patient.Pesel = pesel;
+            Patient.Gender = gender;
 
             DBHandler conn = new DBHandler();
             conn.InitializeConnection();
-            conn.UpdatePatient(patient);
+            conn.UpdatePatient(Patient);
             conn.CloseConnection();
 
         }
@@ -107,7 +106,7 @@ namespace KWDP.View
 
                 DBHandler conn = new DBHandler();
                 conn.InitializeConnection();
-                conn.InsertEkg(this.Patient.Ecg_Id, openFileDialog.SafeFileName);
+                conn.InsertEkg(openFileDialog.SafeFileName, new DateTime(), Patient);
                 conn.CloseConnection();
 
                 // copy to local folder
@@ -121,7 +120,8 @@ namespace KWDP.View
         {
             DBHandler conn = new DBHandler();
             conn.InitializeConnection();
-            string filename = conn.GetEcg(this.Patient.Ecg_Id);
+            List<string> ecgFilenames = conn.GetPatientEcgFilenames(Patient);
+            string filename = ecgFilenames.First();
             conn.CloseConnection();
 
             if (filename != null)

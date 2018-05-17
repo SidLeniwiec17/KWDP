@@ -90,8 +90,6 @@ namespace KWDP.View
             }
             patient.Pesel = pesel;
             patient.Gender = gender;
-            var guid = Guid.NewGuid();
-            patient.Ecg_Id = guid.GetHashCode();
 
             if (patientsList.Count == 0 || (isEditing || (patientsList.All(x => x.Pesel != patient.Pesel))))
             {

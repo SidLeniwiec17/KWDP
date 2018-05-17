@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace KWDP.Objects
 {
@@ -49,7 +40,7 @@ namespace KWDP.Objects
                     if (Answers.ElementAt(j).QuestionId == question.Id)
                     {
                         var answer = Answers.ElementAt(j).Answer;
-                        if (answer.Equals("0") || answer.ToLower().Equals("false") || answer.ToLower().Equals("nie") || answer.Equals("1") || answer.ToLower().Equals("true") || answer.ToLower().Equals("tak"))
+                        if (!answer.Equals(""))
                         {
                             Questions[i].Type = 1;
                             //zmiana koloru
@@ -71,7 +62,7 @@ namespace KWDP.Objects
                 //tworze 16 roznych rekordow patient_answer
                 for (int i = 0; i < answers.Count; i++)
                 {
-                    conn.InitializePatientAnswer(PatientID, answers.ElementAt(i));
+                    conn.InitializePatientAnswer(answers.ElementAt(i));
                 }
                 //po sprawedzeniu jest 16 IDENTYCZNYCH rekordow patient_answer
                 Answers = conn.GetPatientAnswers(PatientID);
@@ -103,7 +94,7 @@ namespace KWDP.Objects
     {
         DBHandler conn = new DBHandler();
         conn.InitializeConnection();
-        conn.UpdatePatientAnswers(PatientID, Answers);
+        conn.UpdatePatientAnswers(Answers);
         conn.CloseConnection();
 
         this.Close();
