@@ -138,6 +138,16 @@ namespace KWDP.Objects
             }
         }
 
+        public void RemovePatientsAnswers(Patient patient)
+        {
+            if (isOpen)
+            {
+                string sql = "delete from patient_answer where patient_id = " + patient.Id + "";
+                SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                command.ExecuteNonQuery();
+            }
+        }
+
         public void InsertEkg(string filename, DateTime date, Patient patient)
         {
             if (isOpen)

@@ -131,6 +131,7 @@ namespace KWDP.View
                     DBHandler conn = new DBHandler();
                     conn.InitializeConnection();
                     conn.RemovePatient(elementToRemove);
+                    conn.RemovePatientsAnswers(elementToRemove);
                     conn.CloseConnection();
                     
                     LoadPatientsList();
