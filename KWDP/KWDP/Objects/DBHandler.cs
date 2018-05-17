@@ -197,12 +197,12 @@ namespace KWDP.Objects
 
             if (isOpen)
             {
-                DbAnswer tempAnsw = new DbAnswer();
                 string sql = "select * from patient_answer where patient_id = " + patientId;
                 SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
                 SQLiteDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
+                    DbAnswer tempAnsw = new DbAnswer();
                     tempAnsw.Answer = reader["answer"].ToString();
                     tempAnsw.QuestionId = int.Parse(reader["question_id"].ToString());
                     tempAnsw.PatientId = int.Parse(reader["patient_id"].ToString());
