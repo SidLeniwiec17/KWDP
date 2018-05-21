@@ -184,6 +184,42 @@ namespace KWDP.View
             wywiad.ShowDialog();
         }
 
+        private void DiagnoseButton_Click(object sender, RoutedEventArgs e)
+        {
+            MLApp.MLApp matlab = new MLApp.MLApp();
+            matlab.Execute(@"cd " + Directory.GetCurrentDirectory() + "/../../");
+
+            DBHandler conn = new DBHandler();
+            conn.InitializeConnection();
+            List<string> ecgFilenames = conn.GetPatientEcgFilenames(Patient);
+            string filename = ecgFilenames.First();
+            conn.CloseConnection();
+
+            if (filename != null)
+            {
+                object result;
+                matlab.Feval("ECG_diagnosis", 5, out result, filename, 500.0);
+                object[] res = result as object[];
+
+                double[][] ecgMoments = new double[4][];
+                for (int i = 1; i < 5; i++)
+                {
+                    if (res[i] is System.Reflection.Missing)
+                    {
+                        ecgMoments[i - 1] = new double[0];
+                    }
+                    else
+                    {
+                        double[,] moments = (double[,]) res[i];
+                        ecgMoments[i - 1] = moments.Cast<double>().ToArray();
+                    }
+                }
+
+                EcgCharacteristics ecgCharacteristics =
+                    new EcgCharacteristics((double)res[0], ecgMoments[0], ecgMoments[1], ecgMoments[2], ecgMoments[3]);
+            }
+        }
+
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             SavePatient();
