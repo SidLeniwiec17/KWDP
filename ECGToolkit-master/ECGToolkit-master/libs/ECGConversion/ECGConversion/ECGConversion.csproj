@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F969B245-DCD2-4AF6-AE74-E95F778D2339}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>ECGConversion</RootNamespace>
+    <AssemblyName>ECGConversion</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <ReleaseVersion>2.2</ReleaseVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="CheckVersion.cs" />
+    <Compile Include="ECGConfig.cs" />
+    <Compile Include="ECGConverter.cs" />
+    <Compile Include="ECGDraw.cs" />
+    <Compile Include="ECGPlugin.cs" />
+    <Compile Include="ECGTool.cs" />
+    <Compile Include="ECGWriter.cs" />
+    <Compile Include="IECGFormat.cs" />
+    <Compile Include="IECGReader.cs" />
+    <Compile Include="RawECGReader.cs" />
+    <Compile Include="SCPReader.cs" />
+    <Compile Include="SortedList.cs" />
+    <Compile Include="UnknownECGReader.cs" />
+    <Compile Include="ECGDemographics\AcquiringDeviceID.cs" />
+    <Compile Include="ECGDemographics\Date.cs" />
+    <Compile Include="ECGDemographics\DemographicEnumrations.cs" />
+    <Compile Include="ECGDemographics\Drug.cs" />
+    <Compile Include="ECGDemographics\IDemographic.cs" />
+    <Compile Include="ECGDiagnostic\IDiagnostic.cs" />
+    <Compile Include="ECGDiagnostic\Statements.cs" />
+    <Compile Include="ECGGlobalMeasurements\GlobalMeasurement.cs" />
+    <Compile Include="ECGGlobalMeasurements\GlobalMeasurements.cs" />
+    <Compile Include="ECGGlobalMeasurements\IGlobalMeasurement.cs" />
+    <Compile Include="ECGGlobalMeasurements\Spike.cs" />
+    <Compile Include="ECGLeadMeasurements\ILeadMeasurement.cs" />
+    <Compile Include="ECGLeadMeasurements\LeadMeasurement.cs" />
+    <Compile Include="ECGLeadMeasurements\LeadMeasurements.cs" />
+    <Compile Include="ECGLeadMeasurements\MeasurementType.cs" />
+    <Compile Include="ECGLeadMeasurements\Morphology.cs" />
+    <Compile Include="ECGManagementSysteem\ECGInfo.cs" />
+    <Compile Include="ECGManagementSysteem\IECGManagementSystem.cs" />
+    <Compile Include="ECGSignals\ISignal.cs" />
+    <Compile Include="ECGSignals\LeadType.cs" />
+    <Compile Include="ECGSignals\QRSZone.cs" />
+    <Compile Include="ECGSignals\Signal.cs" />
+    <Compile Include="ECGSignals\Signals.cs" />
+    <Compile Include="RawFormat\RawECGData.cs" />
+    <Compile Include="RawFormat\RawECGFormat.cs" />
+    <Compile Include="RawFormat\RawECGHeader.cs" />
+    <Compile Include="SCP\SCPDate.cs" />
+    <Compile Include="SCP\SCPFormat.cs" />
+    <Compile Include="SCP\SCPSection.cs" />
+    <Compile Include="SCP\SCPSection0.cs" />
+    <Compile Include="SCP\SCPSection1.cs" />
+    <Compile Include="SCP\SCPSection10.cs" />
+    <Compile Include="SCP\SCPSection11.cs" />
+    <Compile Include="SCP\SCPSection2.cs" />
+    <Compile Include="SCP\SCPSection3.cs" />
+    <Compile Include="SCP\SCPSection4.cs" />
+    <Compile Include="SCP\SCPSection5.cs" />
+    <Compile Include="SCP\SCPSection6.cs" />
+    <Compile Include="SCP\SCPSection7.cs" />
+    <Compile Include="SCP\SCPSection8.cs" />
+    <Compile Include="SCP\SCPSectionUnkown.cs" />
+    <Compile Include="SCP\SCPTime.cs" />
+    <Compile Include="Tools\BytesTool.cs" />
+    <Compile Include="Tools\CRCTool.cs" />
+    <Compile Include="CSV\CSVFormat.cs" />
+    <Compile Include="Tools\DataSection.cs" />
+    <Compile Include="ECGSignals\BufferedSignals.cs" />
+    <Compile Include="ECGSignals\IBufferedSource.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ECGDemographics\" />
+    <Folder Include="ECGDiagnostic\" />
+    <Folder Include="ECGGlobalMeasurements\" />
+    <Folder Include="ECGLeadMeasurements\" />
+    <Folder Include="ECGManagementSysteem\" />
+    <Folder Include="ECGSignals\" />
+    <Folder Include="RawFormat\" />
+    <Folder Include="SCP\" />
+    <Folder Include="Tools\" />
+    <Folder Include="CSV\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="license.rtf" />
+    <Content Include="NOTICE.txt" />
+  </ItemGroup>
+</Project>

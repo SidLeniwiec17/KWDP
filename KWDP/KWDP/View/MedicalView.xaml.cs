@@ -10,6 +10,9 @@ using System.Windows.Controls;
 using Microsoft.Win32;
 using System.IO;
 using System.Windows.Media.Imaging;
+using ECGConversion.SCP;
+using ECGConversion;
+using ECGConversion.ECGSignals;
 
 namespace KWDP.View
 {
@@ -22,6 +25,8 @@ namespace KWDP.View
         public Patient Patient { get; set; }
         public PatientView PatientViewInstance { get; set; }
         public int Index { get; set; }
+
+        public EcgProvider EProvider = new EcgProvider(null);
 
         public MedicalView()
         {
@@ -112,9 +117,79 @@ namespace KWDP.View
                 // copy to local folder
             }
 
-            // insert path to db
-            // show path in listview
+            //IECGFormat format = null;
+
+            //var fmt = "SCP-ECG";
+
+            //IECGReader reader = ECGConverter.Instance.getReader(fmt);
+            //ECGConfig cfg = ECGConverter.Instance.getConfig(fmt);
+
+            //format = reader.Read(openFileDialog.SafeFileName, 0, cfg);
+
+            //Signals _CurrentSignal;
+
+            //format.Signals.getSignals(out _CurrentSignal);
+
+            //if (_CurrentSignal != null)
+            //{
+            //    for (int i = 0, en = _CurrentSignal.NrLeads; i < en; i++)
+            //    {
+            //        ECGTool.NormalizeSignal(_CurrentSignal[i].Rhythm, _CurrentSignal.RhythmSamplesPerSecond);
+            //    }
+            //}
+
+            //Signals sig = _CurrentSignal.CalculateTwelveLeads();
+
+            var secondLead = GetSecondLead(openFileDialog.SafeFileName);
+
+            if (!Directory.Exists("./tmp"))
+            {
+                Directory.CreateDirectory("./tmp");
+            }
+
+            using (System.IO.StreamWriter file =
+            new System.IO.StreamWriter(("./tmp/ecg.csv")))
+            {
+                file.WriteLine("nr,signal");
+                for (int i = 0; i < secondLead.Length; i++)
+                {
+                    file.WriteLine(i + 1 + "," + secondLead[i]);
+                }
+
+            }
         }
+
+        short[] GetSecondLead(string fileName)
+        {
+            IECGFormat format = null;
+
+            var fmt = "SCP-ECG";
+
+            IECGReader reader = ECGConverter.Instance.getReader(fmt);
+            ECGConfig cfg = ECGConverter.Instance.getConfig(fmt);
+
+            format = reader.Read(fileName, 0, cfg);
+
+            Signals _CurrentSignal;
+
+            format.Signals.getSignals(out _CurrentSignal);
+
+            if (_CurrentSignal != null)
+            {
+                for (int i = 0, en = _CurrentSignal.NrLeads; i < en; i++)
+                {
+                    ECGTool.NormalizeSignal(_CurrentSignal[i].Rhythm, _CurrentSignal.RhythmSamplesPerSecond);
+                }
+            }
+
+            Signals sig = _CurrentSignal.CalculateTwelveLeads();
+
+            return sig.GetLeads()[1].Rhythm;
+        }
+
+        // insert path to db
+        // show path in listview
+
 
         private void ViewEkgButton_Click(object sender, RoutedEventArgs e)
         {
@@ -125,13 +200,17 @@ namespace KWDP.View
             conn.CloseConnection();
 
             if (filename != null)
+
+
             {
-                EcgValues[] values = File.ReadAllLines("./ecg/" + filename)
+                EcgValues[] values = File.ReadAllLines("./tmp/" + "ecg1.csv")
                                            .Skip(1)
                                            .Select(v => EcgValues.FromCsv(v))
                                            .ToArray();
 
-                var bitmap = this.DrawEcg(values);
+                this.EProvider.Signal = values.Select(x => x.Signal).ToArray();
+
+                var bitmap = this.DrawEcg(this.EProvider.GetSignal());//((GetSecondLead(filename));
 
                 BitmapSource bitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
                     bitmap.GetHbitmap(),
@@ -145,13 +224,17 @@ namespace KWDP.View
 
         }
 
-        private Bitmap DrawEcg(EcgValues[] values)
+        private Bitmap DrawEcg(short[] values)
         {
-            float[] firstCanal = values.Select(x => x.FirstCanal).ToArray();
+            //float[] firstCanal = values.Select(x => x.Signal).ToArray();          
 
-            Bitmap bmp = new Bitmap(firstCanal.Length, 1000);            
 
-            float maxValue = firstCanal.Max();
+
+            //values = this.EProvider.GetSignal();
+
+            Bitmap bmp = new Bitmap(500, 300);
+
+            float maxValue = values.Max();
 
             var samplesNumber = bmp.Width;
             var maxAmplitude = bmp.Height / 2 - 1;
@@ -161,7 +244,7 @@ namespace KWDP.View
 
             for (int i = 0; i < samplesNumber; i++)
             {
-                points.Add(new PointF(i, -firstCanal[i] / maxValue * maxAmplitude + baseLine));
+                points.Add(new PointF(i, -values[i] / maxValue * maxAmplitude + baseLine));
             }
 
             //var points = firstCanal.Select((v) => new System.Drawing.PointF(
@@ -210,13 +293,15 @@ namespace KWDP.View
                     }
                     else
                     {
-                        double[,] moments = (double[,]) res[i];
+                        double[,] moments = (double[,])res[i];
                         ecgMoments[i - 1] = moments.Cast<double>().ToArray();
                     }
                 }
 
                 EcgCharacteristics ecgCharacteristics =
                     new EcgCharacteristics((double)res[0], ecgMoments[0], ecgMoments[1], ecgMoments[2], ecgMoments[3]);
+
+                this.Diagnoza.Text = ecgCharacteristics.ToString();
             }
         }
 
@@ -231,6 +316,33 @@ namespace KWDP.View
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             LoadData();
+        }
+
+        private void RighrClick(object sender, RoutedEventArgs e)
+        {
+            var data = this.EProvider.Right();
+            Draw(data);
+
+        }
+
+        private void LeftClick(object sender, RoutedEventArgs e)
+        {
+            var data = this.EProvider.Left();
+            Draw(data);
+        }
+
+        private void Draw(short[] data)
+        {
+            var bitmap = this.DrawEcg(data);//((GetSecondLead(filename));
+
+            BitmapSource bitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                bitmap.GetHbitmap(),
+                IntPtr.Zero,
+                Int32Rect.Empty,
+                BitmapSizeOptions.FromEmptyOptions()
+                );
+
+            this.EcgImage.Source = bitmapSource;
         }
     }
 }

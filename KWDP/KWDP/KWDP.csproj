@@ -79,6 +79,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="EcgProvider.cs" />
     <Compile Include="Objects\DbAnswer.cs" />
     <Compile Include="Objects\DBHandler.cs" />
     <Compile Include="Objects\DbQuestion.cs" />
@@ -167,6 +168,36 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="libs\ECGConversion\aECG\aECG.csproj">
+      <Project>{3428cb4e-4b71-49e0-81af-7f571d01dec0}</Project>
+      <Name>aECG</Name>
+    </ProjectReference>
+    <ProjectReference Include="libs\ECGConversion\DICOM\DICOM.csproj">
+      <Project>{ee266ca9-9c60-4688-8386-3f187896ced0}</Project>
+      <Name>DICOM</Name>
+    </ProjectReference>
+    <ProjectReference Include="libs\ECGConversion\ECGConversion\ECGConversion.csproj">
+      <Project>{f969b245-dcd2-4af6-ae74-e95f778d2339}</Project>
+      <Name>ECGConversion</Name>
+    </ProjectReference>
+    <ProjectReference Include="libs\ECGConversion\ISHNE\ISHNE.csproj">
+      <Project>{6dd429f1-1b48-475b-ac86-853395d5d862}</Project>
+      <Name>ISHNE</Name>
+    </ProjectReference>
+    <ProjectReference Include="libs\ECGConversion\MUSEXML\MUSEXML.csproj">
+      <Project>{d00c648e-17f3-4ba4-82ba-57ffccfe285f}</Project>
+      <Name>MUSEXML</Name>
+    </ProjectReference>
+    <ProjectReference Include="libs\ECGConversion\OmronECG\OmronECG.csproj">
+      <Project>{59c6f998-1ba1-44a1-9999-c8a5bb718f15}</Project>
+      <Name>OmronECG</Name>
+    </ProjectReference>
+    <ProjectReference Include="libs\ECGConversion\PDF\PDF.csproj">
+      <Project>{7dd5a8f9-185b-4463-8684-b7ec99700774}</Project>
+      <Name>PDF</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.108.0\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.108.0\build\net451\System.Data.SQLite.Core.targets')" />

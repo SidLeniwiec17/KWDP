@@ -6,10 +6,8 @@ namespace KWDP.View
     internal class EcgValues
     {
         public int SampleNumber { get; set; }
-
-        public float FirstCanal { get; set; }
-
-        public float SecondCanal { get; set; }
+        
+        public short Signal { get; set; }
 
         public static EcgValues FromCsv(string csvLine)
         {
@@ -17,9 +15,7 @@ namespace KWDP.View
 
             EcgValues ecg = new EcgValues();
             ecg.SampleNumber = int.Parse(values[0]);
-            ecg.FirstCanal = float.Parse(values[1], CultureInfo.InvariantCulture);
-            ecg.SecondCanal = float.Parse(values[2], CultureInfo.InvariantCulture);
-
+            ecg.Signal = ((short)float.Parse(values[1], CultureInfo.InvariantCulture));
             return ecg;
         }
     }

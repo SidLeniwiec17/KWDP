@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3428CB4E-4B71-49E0-81AF-7F571D01DEC0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>ECGConversion</RootNamespace>
+    <AssemblyName>ECGCpluginaECG</AssemblyName>
+    <ReleaseVersion>2.2</ReleaseVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="ECGLoad.cs" />
+    <Compile Include="aECG\aECGAddress.cs" />
+    <Compile Include="aECG\aECGAnnotation.cs" />
+    <Compile Include="aECG\aECGAnnotationSet.cs" />
+    <Compile Include="aECG\aECGAssignedAuthorType.cs" />
+    <Compile Include="aECG\aECGAuthor.cs" />
+    <Compile Include="aECG\aECGBoundary.cs" />
+    <Compile Include="aECG\aECGClinicalTrial.cs" />
+    <Compile Include="aECG\aECGCode.cs" />
+    <Compile Include="aECG\aECGComponent.cs" />
+    <Compile Include="aECG\aECGControlVariable.cs" />
+    <Compile Include="aECG\aECGControlVariableHolder.cs" />
+    <Compile Include="aECG\aECGDemographicPerson.cs" />
+    <Compile Include="aECG\aECGDevice.cs" />
+    <Compile Include="aECG\aECGElement.cs" />
+    <Compile Include="aECG\aECGFormat.cs" />
+    <Compile Include="aECG\aECGId.cs" />
+    <Compile Include="aECG\aECGIdentification.cs" />
+    <Compile Include="aECG\aECGLocation.cs" />
+    <Compile Include="aECG\aECGName.cs" />
+    <Compile Include="aECG\aECGOrganization.cs" />
+    <Compile Include="aECG\aECGPerformer.cs" />
+    <Compile Include="aECG\aECGPerson.cs" />
+    <Compile Include="aECG\aECGPlayedManufacturedDevice.cs" />
+    <Compile Include="aECG\aECGRelatedObservation.cs" />
+    <Compile Include="aECG\aECGSequence.cs" />
+    <Compile Include="aECG\aECGSequenceSet.cs" />
+    <Compile Include="aECG\aECGSeries.cs" />
+    <Compile Include="aECG\aECGSite.cs" />
+    <Compile Include="aECG\aECGSubjectAssignment.cs" />
+    <Compile Include="aECG\aECGSubjectAssignmentDefinition.cs" />
+    <Compile Include="aECG\aECGSubjectFindingComment.cs" />
+    <Compile Include="aECG\aECGSupportingROI.cs" />
+    <Compile Include="aECG\aECGTime.cs" />
+    <Compile Include="aECG\aECGTimepointEvent.cs" />
+    <Compile Include="aECG\aECGTransactionType.cs" />
+    <Compile Include="aECG\aECGTrialSubject.cs" />
+    <Compile Include="aECG\aECGUnknownElement.cs" />
+    <Compile Include="aECG\aECGValue.cs" />
+    <Compile Include="aECG\aECGValuePair.cs" />
+    <Compile Include="aECGReader.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="aECG\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ECGConversion\ECGConversion.csproj">
+      <Project>{F969B245-DCD2-4AF6-AE74-E95F778D2339}</Project>
+      <Name>ECGConversion</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Xml" />
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="MegaCare.xslt" />
+  </ItemGroup>
+</Project>

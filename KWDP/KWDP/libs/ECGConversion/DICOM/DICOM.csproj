@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EE266CA9-9C60-4688-8386-3F187896CED0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>ECGConversion</RootNamespace>
+    <AssemblyName>ECGCpluginDICOM</AssemblyName>
+    <ReleaseVersion>2.2</ReleaseVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="DICOM\" />
+    <Folder Include="libs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DICOM\DICOMFormat.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="DICOMReader.cs" />
+    <Compile Include="ECGLoad.cs" />
+    <Compile Include="PACS.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="libs\1.1\dicomcs.dll" />
+    <None Include="libs\1.1\log4net.dll" />
+    <None Include="libs\2.0\dicomcs.dll" />
+    <None Include="libs\2.0\log4net.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ECGConversion\ECGConversion.csproj">
+      <Project>{F969B245-DCD2-4AF6-AE74-E95F778D2339}</Project>
+      <Name>ECGConversion</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="dicomcs">
+      <HintPath>libs\2.0\dicomcs.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>libs\2.0\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+  </ItemGroup>
+</Project>

@@ -26,5 +26,10 @@ namespace KWDP.Objects
             PvcMoments = pvcMoments;
             PacMoments = pacMoments;
         }
+
+        public override string ToString()
+        {
+            return String.Format("AverageHeartRate: {0}, BradycardiaMoments: {1}, TachycardiaMoments: {2}, PvcMoments: {3}, PacMoments: {4}", AverageHeartRate, BradycardiaMoments, TachycardiaMoments, PvcMoments, PacMoments);
+        }
     }
 }

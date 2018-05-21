@@ -78,13 +78,23 @@
             <GroupBox Grid.Row="1" Header="Wykres EKG" HorizontalAlignment="Stretch" Margin="5,5,5,5" VerticalAlignment="Stretch" >
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="3*"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="3*"/>                        
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Image Grid.Row="0" Name="EcgImage">
 
                     </Image>
-                    
+                    <Grid Grid.Row ="1" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" FontFamily="Webdings" Click="LeftClick">3
+                        </Button>
+                        <Button Grid.Column="2" FontFamily="Webdings" Click="RighrClick">4
+                        </Button>
+                    </Grid>
                     
                 </Grid>
                 
@@ -92,6 +102,7 @@
             </GroupBox>
             <Label Grid.Row="2" Style="{StaticResource BigTitleLabel}" Content="Diagnoza"/>
             <GroupBox Grid.Row="4" Header="Proponowana Diagnoza" HorizontalAlignment="Stretch" Margin="5,5,5,5" VerticalAlignment="Stretch" >
+                <TextBox Name="Diagnoza"></TextBox>
             </GroupBox>
         </Grid>
     </Grid>
