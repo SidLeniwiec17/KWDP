@@ -275,6 +275,7 @@ namespace KWDP.View
             DBHandler conn = new DBHandler();
             conn.InitializeConnection();
             List<string> ecgFilenames = conn.GetPatientEcgFilenames(Patient);
+            List<DbAnswer> patientAnswers = conn.GetPatientAnswers(Patient.Id);
             string filename = ecgFilenames.First();
             conn.CloseConnection();
 
@@ -295,6 +296,42 @@ namespace KWDP.View
                     {
                         double[,] moments = (double[,])res[i];
                         ecgMoments[i - 1] = moments.Cast<double>().ToArray();
+                    }
+                }
+
+                int[][] questionIds =
+                {
+                    new int[]{ 1, 2, 5, 8, 11, 15 },
+                    new int[]{ 1, 2, 3, 4, 5, 8, 9, 11, 15 },
+                    new int[]{ 3, 4, 5, 8, 15 },
+                    new int[]{ 1, 3, 5, 8, 11, 15 }
+                };
+                double maxScore = 0.0;
+                int diagnosis = -1;
+                for (int i = 0; i < ecgMoments.Length; i++)
+                {
+                    double score = 0.0;
+                    if (ecgMoments[i].Length > 0)
+                    {
+                        foreach (DbAnswer answer in patientAnswers)
+                        {
+                            if (questionIds[i].Contains(answer.QuestionId) && answer.Answer.ToLower().Equals("tak"))
+                            {
+                                score++;
+                            }
+                        }
+                        score = score * 10 / questionIds[i].Length;
+                        if (i <= 1 && Patient.Age >= 40)
+                        {
+                            score += (Patient.Age - 40) / 10.0;
+                        }
+                        score += ecgMoments[i].Length;
+                    }
+
+                    if (score > maxScore)
+                    {
+                        maxScore = score;
+                        diagnosis = i;
                     }
                 }
 
