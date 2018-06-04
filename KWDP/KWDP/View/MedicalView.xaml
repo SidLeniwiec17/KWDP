@@ -78,7 +78,7 @@
             <GroupBox Grid.Row="1" Header="Wykres EKG" HorizontalAlignment="Stretch" Margin="5,5,5,5" VerticalAlignment="Stretch" >
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="3*"/>                        
+                        <RowDefinition Height="6*"/>                        
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Image Grid.Row="0" Name="EcgImage">
@@ -89,10 +89,15 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" FontFamily="Webdings" Click="LeftClick">3
+                        <Button Grid.Column="0" FontFamily="Webdings" Click="LeftClick" Margin="2">3
                         </Button>
-                        <Button Grid.Column="2" FontFamily="Webdings" Click="RighrClick">4
+                        <Button Grid.Column="1"  Click="MinusClick" Margin="2">-
+                        </Button>
+                        <Button Grid.Column="2"  Click="PlusClick" Margin="2">+
+                        </Button>
+                        <Button Grid.Column="3" FontFamily="Webdings" Click="RighrClick" Margin="2">4
                         </Button>
                     </Grid>
                     

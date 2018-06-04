@@ -11,7 +11,7 @@ namespace KWDP.View
 
         public static EcgValues FromCsv(string csvLine)
         {
-            string[] values = csvLine.Split('\t');
+            string[] values = csvLine.Split(' ');
 
             EcgValues ecg = new EcgValues();
             ecg.SampleNumber = int.Parse(values[0]);

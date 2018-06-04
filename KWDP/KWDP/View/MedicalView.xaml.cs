@@ -26,11 +26,14 @@ namespace KWDP.View
         public PatientView PatientViewInstance { get; set; }
         public int Index { get; set; }
 
+        private int bitmapWidth = 500;
+
         public EcgProvider EProvider = new EcgProvider(null);
 
         public MedicalView()
         {
             InitializeComponent();
+            this.EProvider.offset = this.bitmapWidth;
         }
 
         private void LoadData()
@@ -99,6 +102,7 @@ namespace KWDP.View
         private void LoadEkgButton_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "csv files (*.csv)|*.csv|scp files (*.SCP)|*.SCP|all files (*.*)|*.*";
             if (openFileDialog.ShowDialog() == true)
             {
                 if (!Directory.Exists("./ecg"))
@@ -106,56 +110,43 @@ namespace KWDP.View
                     Directory.CreateDirectory("./ecg");
                 }
 
-                File.Copy(openFileDialog.FileName, "./ecg/" + openFileDialog.SafeFileName, true);
-                // copy to local folder
+                string filename = string.Empty;
+
+                if (Path.GetExtension(openFileDialog.FileName) == ".SCP")
+                {
+
+                    filename = Path.GetFileNameWithoutExtension(openFileDialog.FileName) + ".csv";
+
+                    var secondLead = GetSecondLead(openFileDialog.FileName);
+
+                    using (System.IO.StreamWriter file =
+                    new System.IO.StreamWriter(("./ecg/" + filename)))
+                    {
+                        file.WriteLine("nr signal");
+                        for (int i = 0; i < secondLead.Length; i++)
+                        {
+                            file.WriteLine(i + 1 + " " + secondLead[i]);
+                        }
+
+                    }
+                }
+
+                else
+                {
+                    File.Copy(openFileDialog.FileName, "./ecg/" + openFileDialog.SafeFileName, true);
+
+                    filename = openFileDialog.SafeFileName;
+                }
 
                 DBHandler conn = new DBHandler();
                 conn.InitializeConnection();
-                conn.InsertEkg(openFileDialog.SafeFileName, new DateTime(), Patient);
+                conn.InsertEkg(filename, new DateTime(), Patient);
                 conn.CloseConnection();
 
                 // copy to local folder
-            }
 
-            //IECGFormat format = null;
 
-            //var fmt = "SCP-ECG";
-
-            //IECGReader reader = ECGConverter.Instance.getReader(fmt);
-            //ECGConfig cfg = ECGConverter.Instance.getConfig(fmt);
-
-            //format = reader.Read(openFileDialog.SafeFileName, 0, cfg);
-
-            //Signals _CurrentSignal;
-
-            //format.Signals.getSignals(out _CurrentSignal);
-
-            //if (_CurrentSignal != null)
-            //{
-            //    for (int i = 0, en = _CurrentSignal.NrLeads; i < en; i++)
-            //    {
-            //        ECGTool.NormalizeSignal(_CurrentSignal[i].Rhythm, _CurrentSignal.RhythmSamplesPerSecond);
-            //    }
-            //}
-
-            //Signals sig = _CurrentSignal.CalculateTwelveLeads();
-
-            var secondLead = GetSecondLead(openFileDialog.SafeFileName);
-
-            if (!Directory.Exists("./tmp"))
-            {
-                Directory.CreateDirectory("./tmp");
-            }
-
-            using (System.IO.StreamWriter file =
-            new System.IO.StreamWriter(("./tmp/ecg.csv")))
-            {
-                file.WriteLine("nr,signal");
-                for (int i = 0; i < secondLead.Length; i++)
-                {
-                    file.WriteLine(i + 1 + "," + secondLead[i]);
-                }
-
+                
             }
         }
 
@@ -187,10 +178,6 @@ namespace KWDP.View
             return sig.GetLeads()[1].Rhythm;
         }
 
-        // insert path to db
-        // show path in listview
-
-
         private void ViewEkgButton_Click(object sender, RoutedEventArgs e)
         {
             DBHandler conn = new DBHandler();
@@ -203,14 +190,17 @@ namespace KWDP.View
 
 
             {
-                EcgValues[] values = File.ReadAllLines("./tmp/" + "ecg1.csv")
+                EcgValues[] values = File.ReadAllLines("./ecg/" + filename)
                                            .Skip(1)
                                            .Select(v => EcgValues.FromCsv(v))
                                            .ToArray();
 
                 this.EProvider.Signal = values.Select(x => x.Signal).ToArray();
 
-                var bitmap = this.DrawEcg(this.EProvider.GetSignal());//((GetSecondLead(filename));
+                this.bitmapWidth = 500;
+                this.EProvider.offset = this.bitmapWidth;
+
+                var bitmap = this.DrawEcg(this.EProvider.GetSignal(0));
 
                 BitmapSource bitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
                     bitmap.GetHbitmap(),
@@ -225,35 +215,50 @@ namespace KWDP.View
         }
 
         private Bitmap DrawEcg(short[] values)
-        {
-            //float[] firstCanal = values.Select(x => x.Signal).ToArray();          
-
-
-
-            //values = this.EProvider.GetSignal();
-
-            Bitmap bmp = new Bitmap(500, 300);
+        {  
+            Bitmap bmp = new Bitmap(this.bitmapWidth, 300);
 
             float maxValue = values.Max();
 
+            float minValue = values.Min();
+
+            float diff = maxValue - minValue;
+
             var samplesNumber = bmp.Width;
-            var maxAmplitude = bmp.Height / 2 - 1;
-            var baseLine = bmp.Height / 2;
+            var maxAmplitude = bmp.Height;// / 2 - 1;
+            var baseLine = bmp.Height;// / 2;
 
             var points = new List<PointF>();
 
             for (int i = 0; i < samplesNumber; i++)
             {
-                points.Add(new PointF(i, -values[i] / maxValue * maxAmplitude + baseLine));
-            }
-
-            //var points = firstCanal.Select((v) => new System.Drawing.PointF(
-            //    i,
-            //    (float)(-v / maxValue) * maxAmplitude) + baseLine)).ToArray();
+                points.Add(new PointF(i, -((values[i] - minValue)/ diff) * maxAmplitude + baseLine));
+            }            
 
             using (var g = Graphics.FromImage(bmp))
-            {
-                g.DrawCurve(new Pen(Color.Red, 8), points.ToArray());
+            {  
+                for(int i =0; i<bmp.Width; i+=10)
+                {
+                    g.DrawLine(new Pen(Color.LightPink, 1), new PointF(i, 0), new PointF(i, bmp.Width -1));
+                }
+
+                for (int i = 0; i < bmp.Width; i += 50)
+                {
+                    g.DrawLine(new Pen(Color.LightPink, 2), new PointF(i, 0), new PointF(i, bmp.Width - 1));
+                }
+
+
+                for (int i = 0; i < bmp.Height; i += 10)
+                {
+                    g.DrawLine(new Pen(Color.LightPink, 1), new PointF(0, i), new PointF(bmp.Width - 1, i));
+                }
+
+                for (int i = 0; i < bmp.Height; i += 50)
+                {
+                    g.DrawLine(new Pen(Color.LightPink, 2), new PointF(0, i), new PointF(bmp.Width - 1, i));
+                }
+
+                g.DrawCurve(new Pen(Color.Red, 4), points.ToArray());
             }
 
             return bmp;
@@ -301,11 +306,11 @@ namespace KWDP.View
 
                 int[][] questionIds =
                 {
-                    new int[]{ 1, 2, 5, 8, 11, 15 },
-                    new int[]{ 1, 2, 3, 4, 5, 8, 9, 11, 15 },
-                    new int[]{ 3, 4, 5, 8, 15 },
-                    new int[]{ 1, 3, 5, 8, 11, 15 }
-                };
+                        new int[]{ 1, 2, 5, 8, 11, 15 },
+                        new int[]{ 1, 2, 3, 4, 5, 8, 9, 11, 15 },
+                        new int[]{ 3, 4, 5, 8, 15 },
+                        new int[]{ 1, 3, 5, 8, 11, 15 }
+                    };
                 double maxScore = 0.0;
                 int diagnosis = -1;
                 for (int i = 0; i < ecgMoments.Length; i++)
@@ -370,7 +375,7 @@ namespace KWDP.View
 
         private void Draw(short[] data)
         {
-            var bitmap = this.DrawEcg(data);//((GetSecondLead(filename));
+            var bitmap = this.DrawEcg(data);
 
             BitmapSource bitmapSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
                 bitmap.GetHbitmap(),
@@ -380,6 +385,30 @@ namespace KWDP.View
                 );
 
             this.EcgImage.Source = bitmapSource;
+        }
+
+        private void PlusClick(object sender, RoutedEventArgs e)
+        {
+            if (this.bitmapWidth + 100 < this.EProvider.Signal.Length)
+            {
+                this.bitmapWidth += 100;
+                this.EProvider.offset = this.bitmapWidth;
+            }
+
+            var data = this.EProvider.GetSignal();
+            Draw(data);
+        }
+
+        private void MinusClick(object sender, RoutedEventArgs e)
+        {
+            if (this.bitmapWidth - 100 > 100)
+            {
+                this.bitmapWidth -= 100;
+                this.EProvider.offset = this.bitmapWidth;
+            }
+
+            var data = this.EProvider.GetSignal();
+            Draw(data);
         }
     }
 }

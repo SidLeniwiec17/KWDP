@@ -12,18 +12,20 @@ namespace KWDP
 
         private int start = 0;
 
-        private int offset = 500;
+        public int offset = 500;
 
         public EcgProvider(short[] signal)
         {
             this.Signal = signal;
         }
 
-        public short[] GetSignal(int start = 0, int offset = 500)
+        public short[] GetSignal(int start = 0)
         {
+            this.start = start;            
+
             var result = new short[offset];
 
-            Array.Copy(this.Signal, start, result, 0, offset);
+            Array.Copy(this.Signal, start, result, 0, this.offset);
 
             return result;
         }
@@ -55,9 +57,8 @@ namespace KWDP
 
             var newStart = start - offset;
 
-            if (newStart - offset < this.Signal.Length)
-            {
-                newStart = 0;
+            if (newStart < 0)
+            {                
                 this.start = 0;
             }
 
@@ -66,7 +67,7 @@ namespace KWDP
                 this.start = newStart;
             }
 
-            Array.Copy(this.Signal, newStart, result, 0, offset);
+            Array.Copy(this.Signal, this.start, result, 0, offset);
 
             return result;
         }
