@@ -150,7 +150,7 @@ namespace KWDP.View
             }
         }
 
-        short[] GetSecondLead(string fileName)
+        float[] GetSecondLead(string fileName)
         {
             IECGFormat format = null;
 
@@ -175,7 +175,7 @@ namespace KWDP.View
 
             Signals sig = _CurrentSignal.CalculateTwelveLeads();
 
-            return sig.GetLeads()[1].Rhythm;
+            return Array.ConvertAll(sig.GetLeads()[1].Rhythm, x => (float)(x)) ;
         }
 
         private void ViewEkgButton_Click(object sender, RoutedEventArgs e)
@@ -214,7 +214,7 @@ namespace KWDP.View
 
         }
 
-        private Bitmap DrawEcg(short[] values)
+        private Bitmap DrawEcg(float[] values)
         {  
             Bitmap bmp = new Bitmap(this.bitmapWidth, 300);
 
@@ -225,14 +225,15 @@ namespace KWDP.View
             float diff = maxValue - minValue;
 
             var samplesNumber = bmp.Width;
-            var maxAmplitude = bmp.Height;// / 2 - 1;
+            int margin = 30;
+            var maxAmplitude = bmp.Height - margin;// / 2 - 1;
             var baseLine = bmp.Height;// / 2;
 
             var points = new List<PointF>();
 
             for (int i = 0; i < samplesNumber; i++)
             {
-                points.Add(new PointF(i, -((values[i] - minValue)/ diff) * maxAmplitude + baseLine));
+                points.Add(new PointF(i, -((values[i] - minValue)/ diff) * maxAmplitude + baseLine - margin/2));
             }            
 
             using (var g = Graphics.FromImage(bmp))
@@ -275,7 +276,7 @@ namespace KWDP.View
         private void DiagnoseButton_Click(object sender, RoutedEventArgs e)
         {
             MLApp.MLApp matlab = new MLApp.MLApp();
-            matlab.Execute(@"cd " + Directory.GetCurrentDirectory() + "/../../");
+            matlab.Execute(@"cd " + Directory.GetCurrentDirectory());
 
             DBHandler conn = new DBHandler();
             conn.InitializeConnection();
@@ -343,7 +344,10 @@ namespace KWDP.View
                 EcgCharacteristics ecgCharacteristics =
                     new EcgCharacteristics((double)res[0], ecgMoments[0], ecgMoments[1], ecgMoments[2], ecgMoments[3]);
 
-                this.Diagnoza.Text = ecgCharacteristics.ToString();
+                string diagnose = string.Format("Average Heart Rythm: {0}\nBradycardia: {1}\nTachycardia: {2}\nPremature Ventricular Contraction: {3}\nPremature Atrium Contraction: {4}", 
+                    (double)res[0], ecgMoments[0].Length, ecgMoments[1].Length, ecgMoments[2].Length, ecgMoments[3].Length);
+
+                this.Diagnoza.Text = diagnose;
             }
         }
 
@@ -373,7 +377,7 @@ namespace KWDP.View
             Draw(data);
         }
 
-        private void Draw(short[] data)
+        private void Draw(float[] data)
         {
             var bitmap = this.DrawEcg(data);
 
@@ -387,7 +391,7 @@ namespace KWDP.View
             this.EcgImage.Source = bitmapSource;
         }
 
-        private void PlusClick(object sender, RoutedEventArgs e)
+        private void MinusClick(object sender, RoutedEventArgs e)
         {
             if (this.bitmapWidth + 100 < this.EProvider.Signal.Length)
             {
@@ -399,9 +403,9 @@ namespace KWDP.View
             Draw(data);
         }
 
-        private void MinusClick(object sender, RoutedEventArgs e)
+        private void PlusClick(object sender, RoutedEventArgs e)
         {
-            if (this.bitmapWidth - 100 > 100)
+            if (this.bitmapWidth - 100 > 300)
             {
                 this.bitmapWidth -= 100;
                 this.EProvider.offset = this.bitmapWidth;

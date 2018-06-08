@@ -8,31 +8,31 @@ namespace KWDP
 {
     public class EcgProvider
     {
-        public short[] Signal { get; set; }
+        public float[] Signal { get; set; }
 
         private int start = 0;
 
         public int offset = 500;
 
-        public EcgProvider(short[] signal)
+        public EcgProvider(float[] signal)
         {
             this.Signal = signal;
         }
 
-        public short[] GetSignal(int start = 0)
+        public float[] GetSignal(int start = 0)
         {
             this.start = start;            
 
-            var result = new short[offset];
+            var result = new float[offset];
 
             Array.Copy(this.Signal, start, result, 0, this.offset);
 
             return result;
         }
 
-        public short[] Right()
+        public float[] Right()
         {
-            var result = new short[offset];
+            var result = new float[offset];
 
             var newStart = start + offset;
 
@@ -51,9 +51,9 @@ namespace KWDP
             return result;
         }
 
-        public short[] Left()
+        public float[] Left()
         {
-            var result = new short[offset];
+            var result = new float[offset];
 
             var newStart = start - offset;
 
